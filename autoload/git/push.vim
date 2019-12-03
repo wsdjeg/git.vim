@@ -1,7 +1,10 @@
 let s:JOB = SpaceVim#api#import('job')
 function! git#push#run(...)
 
-    let cmd = ['git', 'push'] + a:000
+    let cmd = ['git', 'push']
+    if a:0 > 0
+        let cmd += a:000
+    endif
     call s:JOB.start(cmd,
                 \ {
                 \ 'on_stdout' : function('s:on_stdout'),
