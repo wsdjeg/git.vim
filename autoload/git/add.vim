@@ -8,6 +8,7 @@ function! git#add#run(files)
     else
         let cmd = ['git', 'add'] + a:files
     endif
+    call git#logger#info('git-add cmd:' . string(cmd))
     call s:JOB.start(cmd,
                 \ {
                 \ 'on_exit' : function('s:on_exit'),
@@ -16,12 +17,12 @@ function! git#add#run(files)
 
 endfunction
 
-function! s:on_exit(...) abort
-    let data = get(a:000, 2)
-    if data != 0
-        echo 'failed!'
-    else
+function! s:on_exit(id, data, event) abort
+    call git#logger#info('git-add exit data:' . string(a:data))
+    if a:data ==# 0
         echo 'done!'
+    else
+        echo 'failed!'
     endif
 endfunction
 

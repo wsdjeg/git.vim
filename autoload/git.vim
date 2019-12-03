@@ -13,6 +13,8 @@ function! git#run(...)
         call git#add#run(a:000[1:])
     elseif cmd ==# 'push'
         call git#push#run(a:000[1:])
+    elseif cmd ==# '--log'
+        call git#logger#view()
     elseif cmd ==# 'status'
         call git#status#run(a:000[1:])
     else
