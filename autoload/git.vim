@@ -13,6 +13,19 @@ function! git#run(...)
         call git#add#run(a:000[1:])
     elseif cmd ==# 'push'
         call git#push#run(a:000[1:])
+    elseif cmd ==# 'status'
+        call git#status#run(a:000[1:])
     else
+    endif
+endfunction
+
+
+function! git#complete(ArgLead, CmdLine, CursorPos) abort
+    let str = a:CmdLine[:a:CursorPos-1]
+    if str =~# '^Git\s\+[a-zA-Z]*$'
+        return join(['add', 'push', 'status'],
+                    \ "\n")
+    elseif str =~# '^Git\s\+add\s\+.*$'
+        return git#add#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     endif
 endfunction
