@@ -29,5 +29,7 @@ function! git#complete(ArgLead, CmdLine, CursorPos) abort
                     \ "\n")
     elseif str =~# '^Git\s\+add\s\+.*$'
         return git#add#complete(a:ArgLead, a:CmdLine, a:CursorPos)
+    elseif str =~# '^Git\s\+push\s\+.*$'
+        return git#push#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     endif
 endfunction

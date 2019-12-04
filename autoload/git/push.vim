@@ -38,3 +38,7 @@ function! s:on_stderr(id, data, event) abort
         exe 'Echoerr ' . line
     endfor
 endfunction
+
+function! git#push#complete(ArgLead, CmdLine, CursorPos)
+
+endfunction
