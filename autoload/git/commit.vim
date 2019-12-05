@@ -50,7 +50,6 @@ function! s:openCommitBuffer() abort
     setlocal modifiable
     setf git-commit
     nnoremap <buffer><silent> q :bd!<CR>
-    " https://github.com/lambdalisue/gina.vim/blob/2e9de27914c3765c87dc28626af772ef6207375e/autoload/gina/command/commit.vim
 
     augroup git_commit_buffer
         autocmd! * <buffer>
