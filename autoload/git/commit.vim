@@ -47,10 +47,41 @@ function! s:openCommitBuffer() abort
     setl buftype=nofile
     setf git-commit
     nnoremap <buffer><silent> q :bd!<CR>
-" https://github.com/lambdalisue/gina.vim/blob/2e9de27914c3765c87dc28626af772ef6207375e/autoload/gina/command/commit.vim
+    " https://github.com/lambdalisue/gina.vim/blob/2e9de27914c3765c87dc28626af772ef6207375e/autoload/gina/command/commit.vim
+
+    augroup git_commit_buffer
+        autocmd! * <buffer>
+        autocmd BufReadCmd <buffer> call s:BufReadCmd()
+        autocmd BufWriteCmd <buffer> call s:BufWriteCmd()
+        autocmd QuitPre  <buffer> call s:QuitPre()
+        autocmd WinLeave <buffer> call s:WinLeave()
+        autocmd WinEnter <buffer> silent! unlet! b:git_commit_quitpre
+    augroup END
     return bufnr()
 endfunction
 
-function! s:finishCommit() abort
-    
+" NOTE:
+" :w      -- BufWriteCmd
+" <C-w>p  -- WinLeave
+" :wq     -- QuitPre -> BufWriteCmd -> WinLeave
+" :q      -- QuitPre -> WinLeave
+function! s:BufWriteCmd() abort
+    let commit_file = '.git\COMMIT_EDITMSG'
+    call writefile(commit_file, getline(1, '$'))
+endfunction
+
+function! s:QuitPre() abort
+    let b:git_commit_quitpre = 1
+
+endfunction
+
+function! s:WinLeave() abort
+    if get(b:, 'git_commit_quitpre', 0)
+        let cmd = ['git', 'commit', '-F', '.git\COMMIT_EDITMSG']
+        call s:JOB.start(cmd,
+                    \ {
+                    \ 'on_exit' : function('s:on_exit'),
+                    \ }
+                    \ )
+    endif
 endfunction
