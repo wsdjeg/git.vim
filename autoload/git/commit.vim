@@ -67,7 +67,7 @@ endfunction
 " :q      -- QuitPre -> WinLeave
 function! s:BufWriteCmd() abort
     let commit_file = '.git\COMMIT_EDITMSG'
-    call writefile(commit_file, getline(1, '$'))
+    call writefile(getline(1, '$'), commit_file)
 endfunction
 
 function! s:QuitPre() abort
@@ -85,7 +85,7 @@ function! s:WinLeave() abort
     endif
 endfunction
 
-function! s:on_commit_exit(...) abort
+function! s:on_commit_exit(id, data, event) abort
     call git#logger#info('git-commit exit data:' . string(a:data))
     if a:data ==# 0
         echo 'done!'
