@@ -43,15 +43,17 @@ endfunction
 function! s:openCommitBuffer() abort
     10split git://commit
     normal! "_dd
-    setl nobuflisted
-    setl buftype=nofile
+    setlocal nobuflisted
+    setlocal buftype=acwrite
+    setlocal bufhidden=hide
+    setlocal noswapfile
+    setlocal modifiable
     setf git-commit
     nnoremap <buffer><silent> q :bd!<CR>
     " https://github.com/lambdalisue/gina.vim/blob/2e9de27914c3765c87dc28626af772ef6207375e/autoload/gina/command/commit.vim
 
     augroup git_commit_buffer
         autocmd! * <buffer>
-        autocmd BufReadCmd <buffer> call s:BufReadCmd()
         autocmd BufWriteCmd <buffer> call s:BufWriteCmd()
         autocmd QuitPre  <buffer> call s:QuitPre()
         autocmd WinLeave <buffer> call s:WinLeave()
