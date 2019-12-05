@@ -84,6 +84,7 @@ function! s:WinLeave() abort
                     \ 'on_exit' : function('s:on_commit_exit'),
                     \ }
                     \ )
+        quit
     endif
 endfunction
 
