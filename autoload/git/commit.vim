@@ -72,7 +72,6 @@ endfunction
 
 function! s:QuitPre() abort
     let b:git_commit_quitpre = 1
-
 endfunction
 
 function! s:WinLeave() abort
@@ -80,8 +79,17 @@ function! s:WinLeave() abort
         let cmd = ['git', 'commit', '-F', '.git\COMMIT_EDITMSG']
         call s:JOB.start(cmd,
                     \ {
-                    \ 'on_exit' : function('s:on_exit'),
+                    \ 'on_exit' : function('s:on_commit_exit'),
                     \ }
                     \ )
+    endif
+endfunction
+
+function! s:on_commit_exit(...) abort
+    call git#logger#info('git-commit exit data:' . string(a:data))
+    if a:data ==# 0
+        echo 'done!'
+    else
+        echo 'failed!'
     endif
 endfunction
