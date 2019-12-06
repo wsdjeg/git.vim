@@ -16,4 +16,6 @@ Use git in vim
 
 **`:Git commit`**
 
+![git-commit](https://user-images.githubusercontent.com/13142418/70335089-96519c00-1881-11ea-9c96-84c32566a002.png)
+
 
