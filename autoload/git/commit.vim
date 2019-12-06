@@ -41,7 +41,7 @@ function! s:on_exit(id, data, event) abort
 endfunction
 
 function! s:openCommitBuffer() abort
-    10split git://commit
+    10split fuckcommit
     normal! "_dd
     setlocal nobuflisted
     setlocal buftype=acwrite
