@@ -38,6 +38,7 @@ function! s:openStatusBuffer() abort
     normal! "_dd
     setl nobuflisted
     setl nomodifiable
+    setl nonumber norelativenumber
     setl buftype=nofile
     setf git-status
     nnoremap <buffer><silent> q :bd!<CR>
