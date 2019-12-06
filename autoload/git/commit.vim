@@ -77,13 +77,15 @@ endfunction
 
 function! s:WinLeave() abort
     if get(b:, 'git_commit_quitpre', 0)
-        let cmd = ['git', 'commit', '-F', '.git\COMMIT_EDITMSG']
-        call s:JOB.start(cmd,
+        let cmd = ['git', 'commit', '-F', '-']
+        let id = s:JOB.start(cmd,
                     \ {
                     \ 'on_exit' : function('s:on_commit_exit'),
                     \ }
                     \ )
         quit
+        call s:JOB.send(id, getline(1, '$'))
+        call s:JOB.chanclose(id, 'stdin')
     endif
 endfunction
 
