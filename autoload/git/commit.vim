@@ -50,13 +50,14 @@ function! s:openCommitBuffer() abort
     setlocal modifiable
     setf git-commit
     nnoremap <buffer><silent> q :bd!<CR>
+    let b:git_commit_quitpre = 0
 
     augroup git_commit_buffer
         autocmd! * <buffer>
         autocmd BufWriteCmd <buffer> call s:BufWriteCmd()
         autocmd QuitPre  <buffer> call s:QuitPre()
         autocmd WinLeave <buffer> call s:WinLeave()
-        autocmd WinEnter <buffer> silent! unlet! b:git_commit_quitpre
+        autocmd WinEnter <buffer> let b:git_commit_quitpre = 0
     augroup END
     return bufnr()
 endfunction
@@ -76,16 +77,15 @@ function! s:QuitPre() abort
 endfunction
 
 function! s:WinLeave() abort
-    if get(b:, 'git_commit_quitpre', 0)
+    if b:git_commit_quitpre == 1
         let cmd = ['git', 'commit', '-F', '-']
         let id = s:JOB.start(cmd,
                     \ {
                     \ 'on_exit' : function('s:on_commit_exit'),
                     \ }
                     \ )
-        quit
         " line start with # should be ignored
-        call s:JOB.send(id, filter(getline(1, '$'), 'v:val !~ "^\s*#"'))
+        call s:JOB.send(id, filter(readfile('.git\COMMIT_EDITMSG'), 'v:val !~ "^\s*#"'))
         call s:JOB.chanclose(id, 'stdin')
     endif
 endfunction
