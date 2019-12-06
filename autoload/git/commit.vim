@@ -72,6 +72,7 @@ endfunction
 function! s:BufWriteCmd() abort
     let commit_file = '.git\COMMIT_EDITMSG'
     call writefile(getline(1, '$'), commit_file)
+    setlocal nomodified
 endfunction
 
 function! s:QuitPre() abort
