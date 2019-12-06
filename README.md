@@ -18,4 +18,8 @@ Use git in vim
 
 ![git-commit](https://user-images.githubusercontent.com/13142418/70335089-96519c00-1881-11ea-9c96-84c32566a002.png)
 
+**`:Git push`**
+
+![git-push](https://user-images.githubusercontent.com/13142418/70335203-d0bb3900-1881-11ea-8bf3-85b248c20dae.png)
+
 
