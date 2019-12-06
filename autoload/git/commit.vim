@@ -84,7 +84,8 @@ function! s:WinLeave() abort
                     \ }
                     \ )
         quit
-        call s:JOB.send(id, getline(1, '$'))
+        " line start with # should be ignored
+        call s:JOB.send(id, filter(getline(1, '$'), 'v:val !~ "^\s*#"'))
         call s:JOB.chanclose(id, 'stdin')
     endif
 endfunction
