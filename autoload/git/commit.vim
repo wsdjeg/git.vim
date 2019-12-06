@@ -45,18 +45,19 @@ function! s:openCommitBuffer() abort
     normal! "_dd
     setlocal nobuflisted
     setlocal buftype=acwrite
-    setlocal bufhidden=hide
+    setlocal bufhidden=wipe
     setlocal noswapfile
     setlocal modifiable
     setf git-commit
     nnoremap <buffer><silent> q :bd!<CR>
+    let b:git_commit_quitpre = 0
 
     augroup git_commit_buffer
         autocmd! * <buffer>
         autocmd BufWriteCmd <buffer> call s:BufWriteCmd()
         autocmd QuitPre  <buffer> call s:QuitPre()
         autocmd WinLeave <buffer> call s:WinLeave()
-        autocmd WinEnter <buffer> silent! unlet! b:git_commit_quitpre
+        autocmd WinEnter <buffer> let b:git_commit_quitpre = 0
     augroup END
     return bufnr()
 endfunction
@@ -65,10 +66,13 @@ endfunction
 " :w      -- BufWriteCmd
 " <C-w>p  -- WinLeave
 " :wq     -- QuitPre -> BufWriteCmd -> WinLeave
+" fuck when run `:wq` the commit window will not be closed
+" @fixme what the fuck
 " :q      -- QuitPre -> WinLeave
 function! s:BufWriteCmd() abort
     let commit_file = '.git\COMMIT_EDITMSG'
     call writefile(getline(1, '$'), commit_file)
+    setlocal nomodified
 endfunction
 
 function! s:QuitPre() abort
@@ -76,14 +80,16 @@ function! s:QuitPre() abort
 endfunction
 
 function! s:WinLeave() abort
-    if get(b:, 'git_commit_quitpre', 0)
-        let cmd = ['git', 'commit', '-F', '.git\COMMIT_EDITMSG']
-        call s:JOB.start(cmd,
+    if b:git_commit_quitpre == 1
+        let cmd = ['git', 'commit', '-F', '-']
+        let id = s:JOB.start(cmd,
                     \ {
                     \ 'on_exit' : function('s:on_commit_exit'),
                     \ }
                     \ )
-        quit
+        " line start with # should be ignored
+        call s:JOB.send(id, filter(readfile('.git\COMMIT_EDITMSG'), 'v:val !~ "^\s*#"'))
+        call s:JOB.chanclose(id, 'stdin')
     endif
 endfunction
 
