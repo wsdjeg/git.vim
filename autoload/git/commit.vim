@@ -44,7 +44,7 @@ function! s:openCommitBuffer() abort
     10split git://commit
     normal! "_dd
     setlocal nobuflisted
-    setlocal buftype=acwrite
+    setlocal buftype=nofile
     setlocal bufhidden=hide
     setlocal noswapfile
     setlocal modifiable
