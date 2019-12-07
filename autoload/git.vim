@@ -19,17 +19,24 @@ function! git#run(...)
         call git#add#run(a:000[1:])
     elseif cmd ==# 'push'
         call git#push#run(a:000[1:])
-    elseif cmd ==# '--log'
-        call git#logger#view()
     elseif cmd ==# 'status'
         call git#status#run(a:000[1:])
     elseif cmd ==# 'diff'
         call git#diff#run(a:000[1:])
     elseif cmd ==# 'reset'
         call git#reset#run(a:000[1:])
+    elseif cmd ==# 'merge'
+        call git#merge#run(a:000[1:])
+    elseif cmd ==# 'rebase'
+        call git#rebase#run(a:000[1:])
     elseif cmd ==# 'commit'
         call git#commit#run(a:000[1:])
+    elseif cmd ==# '--log'
+        call git#logger#view()
     else
+        echohl WarningMsg
+        echo 'Git ' . cmd . ' has not been implemented!'
+        echohl None
     endif
 endfunction
 
@@ -37,7 +44,7 @@ endfunction
 function! git#complete(ArgLead, CmdLine, CursorPos) abort
     let str = a:CmdLine[:a:CursorPos-1]
     if str =~# '^Git\s\+[a-zA-Z]*$'
-        return join(['add', 'push', 'status', 'commit', 'diff'],
+        return join(['add', 'push', 'status', 'commit', 'diff', 'merge', 'rebase'],
                     \ "\n")
     elseif str =~# '^Git\s\+add\s\+.*$'
         return git#add#complete(a:ArgLead, a:CmdLine, a:CursorPos)
