@@ -1,0 +1,22 @@
+*git.txt*	Git support in vim
+Wang Shidong                                                             *git*
+
+==============================================================================
+CONTENTS                                                        *git-contents*
+  1. Introduction..................................................|git-intro|
+  2. Commands...................................................|git-commands|
+
+==============================================================================
+INTRODUCTION                                                       *git-intro*
+
+git.vim is a simple plugin for using git in vim and neovim. This plugin
+requires SpaceVim API and |job| support.
+
+==============================================================================
+COMMANDS                                                        *git-commands*
+
+:Git                                                                    *:Git*
+  Run git command asynchronously
+
+
+vim:tw=78:ts=8:ft=help:norl:

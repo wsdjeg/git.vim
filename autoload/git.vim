@@ -6,6 +6,12 @@
 " License: GPLv3
 "=============================================================================
 
+""
+" @section Introduction, intro
+" @library
+" @order intro options config layers api faq changelog
+" git.vim is a simple plugin for using git in vim and neovim.
+" This plugin requires SpaceVim API and |job| support.
 
 function! git#run(...)
     let cmd = get(a:000, 0, '')

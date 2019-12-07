@@ -7,4 +7,6 @@
 "=============================================================================
 
 
+""
+" Run git command asynchronously
 command! -nargs=+ -complete=custom,git#complete Git call git#run(<f-args>)
