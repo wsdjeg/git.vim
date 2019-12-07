@@ -1,13 +1,14 @@
 let s:JOB = SpaceVim#api#import('job')
 
-function! git#add#run(files)
 
-    if len(a:files) == 1 && a:files[0] ==# '%'
-        let cmd = ['git', 'add', expand('%')] 
+function! git#reset#run(args)
+
+    if len(a:args) == 1 && a:args[0] ==# '%'
+        let cmd = ['git', 'reset', 'HEAD', expand('%')] 
     else
-        let cmd = ['git', 'add'] + a:files
+        let cmd = ['git', 'reset'] + a:args
     endif
-    call git#logger#info('git-add cmd:' . string(cmd))
+    call git#logger#info('git-reset cmd:' . string(cmd))
     call s:JOB.start(cmd,
                 \ {
                 \ 'on_exit' : function('s:on_exit'),
@@ -17,7 +18,7 @@ function! git#add#run(files)
 endfunction
 
 function! s:on_exit(id, data, event) abort
-    call git#logger#info('git-add exit data:' . string(a:data))
+    call git#logger#info('git-reset exit data:' . string(a:data))
     if a:data ==# 0
         echo 'done!'
     else
@@ -25,8 +26,9 @@ function! s:on_exit(id, data, event) abort
     endif
 endfunction
 
-function! git#add#complete(ArgLead, CmdLine, CursorPos)
+function! git#reset#complete(ArgLead, CmdLine, CursorPos)
 
     return "%\n" . join(getcompletion(a:ArgLead, 'file'), "\n")
 
 endfunction
+
