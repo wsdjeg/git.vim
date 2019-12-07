@@ -20,9 +20,9 @@ endfunction
 function! s:on_exit(id, data, event) abort
     call git#logger#info('git-merge exit data:' . string(a:data))
     if a:data ==# 0
-        echo 'done!'
+        echo 'merged done!'
     else
-        echo 'failed!'
+        echo 'merged failed!'
     endif
 endfunction
 
@@ -77,7 +77,17 @@ endfunction
     " --signoff             add Signed-off-by:
     " --no-verify           bypass pre-merge-commit and commit-msg hooks
 
+
+function! s:args_with_two() abort
+    return join([
+                \ '--stat',
+                \ '--abort',
+                \ ], "\n")
+endfunction
 function! git#merge#complete(ArgLead, CmdLine, CursorPos)
+    if a:ArgLead =~# '^--'
+        return s:args_with_two()
+    endif
 
     return join(s:unmerged_branchs(), "\n")
 
