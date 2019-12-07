@@ -52,5 +52,7 @@ function! git#complete(ArgLead, CmdLine, CursorPos) abort
         return git#push#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     elseif str =~# '^Git\s\+diff\s\+.*$'
         return git#diff#complete(a:ArgLead, a:CmdLine, a:CursorPos)
+    elseif str =~# '^Git\s\+merge\s\+.*$'
+        return git#merge#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     endif
 endfunction
