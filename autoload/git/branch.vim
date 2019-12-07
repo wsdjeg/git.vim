@@ -44,3 +44,11 @@ function! git#branch#complete(ArgLead, CmdLine, CursorPos)
 
 endfunction
 
+function! git#branch#current()
+    let head = system('git branch --show-current')
+    if !v:shell_error
+        return trim(head)
+    else
+        return ''
+    endif
+endfunction

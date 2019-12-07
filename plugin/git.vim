@@ -6,6 +6,7 @@
 " License: GPLv3
 "=============================================================================
 
+let g:loaded_git = 1
 
 ""
 " Run git command asynchronously
