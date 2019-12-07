@@ -33,6 +33,8 @@ function! git#run(...)
         call git#commit#run(a:000[1:])
     elseif cmd ==# 'branch'
         call git#branch#run(a:000[1:])
+    elseif cmd ==# 'checkout'
+        call git#checkout#run(a:000[1:])
     elseif cmd ==# '--log'
         let args = get(a:000, 1, '')
         if args ==# 'clear'
