@@ -29,3 +29,7 @@ function! git#logger#view()
   setl buftype=nofile
   setl filetype=markdown
 endfunction
+
+function! git#logger#clear() abort
+    call s:LOG.clear(1)
+endfunction

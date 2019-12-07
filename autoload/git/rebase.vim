@@ -5,7 +5,7 @@ function! git#rebase#run(...)
     let s:bufnr = s:openRebaseCommitBuffer()
     let s:lines = []
     if !empty(a:1)
-        let cmd = ['git', 'rebase', '--edit']
+        let cmd = ['git', 'rebase', '--edit'] + a:1
     else
         finish
     endif
@@ -37,24 +37,24 @@ function! s:on_exit(id, data, event) abort
 endfunction
 
 function! s:openRebaseCommitBuffer() abort
-    10split git://commit
+    10split git://rebase
     normal! "_dd
     setlocal nobuflisted
     setlocal buftype=acwrite
     setlocal bufhidden=wipe
     setlocal noswapfile
     setlocal modifiable
-    setf git-commit
+    setf git-rebase
     nnoremap <buffer><silent> q :bd!<CR>
     let b:git_commit_quitpre = 0
 
-    augroup git_commit_buffer
-        autocmd! * <buffer>
-        autocmd BufWriteCmd <buffer> call s:BufWriteCmd()
-        autocmd QuitPre  <buffer> call s:QuitPre()
-        autocmd WinLeave <buffer> call s:WinLeave()
-        autocmd WinEnter <buffer> let b:git_commit_quitpre = 0
-    augroup END
+    " augroup git_commit_buffer
+        " autocmd! * <buffer>
+        " autocmd BufWriteCmd <buffer> call s:BufWriteCmd()
+        " autocmd QuitPre  <buffer> call s:QuitPre()
+        " autocmd WinLeave <buffer> call s:WinLeave()
+        " autocmd WinEnter <buffer> let b:git_commit_quitpre = 0
+    " augroup END
     return bufnr()
 endfunction
 

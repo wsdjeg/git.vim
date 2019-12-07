@@ -32,7 +32,12 @@ function! git#run(...)
     elseif cmd ==# 'commit'
         call git#commit#run(a:000[1:])
     elseif cmd ==# '--log'
-        call git#logger#view()
+        let args = get(a:000, 1, '')
+        if args ==# 'clear'
+            call git#logger#clear()
+        else
+            call git#logger#view()
+        endif
     else
         echohl WarningMsg
         echo 'Git ' . cmd . ' has not been implemented!'
