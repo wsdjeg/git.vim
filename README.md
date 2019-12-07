@@ -5,6 +5,8 @@ Use git in vim
 
 - `:Git add %`: stage current file.
 - `:Git add .`: stage all files
+- `:Git commit`: edit commit message
+- `:Git push`: push to remote
 
 
 
@@ -21,5 +23,9 @@ Use git in vim
 **`:Git push`**
 
 ![git-push](https://user-images.githubusercontent.com/13142418/70335203-d0bb3900-1881-11ea-8bf3-85b248c20dae.png)
+
+**`:Git diff`**
+
+![git-diff](https://user-images.githubusercontent.com/13142418/70369625-7c52a080-18f7-11ea-9ee9-a1ba499b3d1f.png)
 
 

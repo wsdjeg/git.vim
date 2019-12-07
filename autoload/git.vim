@@ -29,11 +29,13 @@ endfunction
 function! git#complete(ArgLead, CmdLine, CursorPos) abort
     let str = a:CmdLine[:a:CursorPos-1]
     if str =~# '^Git\s\+[a-zA-Z]*$'
-        return join(['add', 'push', 'status'],
+        return join(['add', 'push', 'status', 'commit', 'diff'],
                     \ "\n")
     elseif str =~# '^Git\s\+add\s\+.*$'
         return git#add#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     elseif str =~# '^Git\s\+push\s\+.*$'
         return git#push#complete(a:ArgLead, a:CmdLine, a:CursorPos)
+    elseif str =~# '^Git\s\+diff\s\+.*$'
+        return git#diff#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     endif
 endfunction

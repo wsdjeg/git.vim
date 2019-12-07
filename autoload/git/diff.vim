@@ -2,8 +2,12 @@ let s:JOB = SpaceVim#api#import('job')
 let s:BUFFER = SpaceVim#api#import('vim#buffer')
 
 function! git#diff#run(...)
+    if len(a:1) == 1 && a:1[0] ==# '%'
+        let cmd = ['git', 'diff', expand('%')] 
+    else
+        let cmd = ['git', 'diff'] + a:1
+    endif
     let s:bufnr = s:openDiffBuffer()
-    let cmd = ['git', 'diff']
     let s:lines = []
     call git#logger#info('git-diff cmd:' . string(cmd))
     call s:JOB.start(cmd,
@@ -40,8 +44,14 @@ function! s:openDiffBuffer() abort
     setl nomodifiable
     setl nonumber norelativenumber
     setl buftype=nofile
-    setf git-status
+    setf git-diff
+    setl syntax=diff
     nnoremap <buffer><silent> q :bd!<CR>
     return bufnr()
 endfunction
 
+function! git#diff#complete(ArgLead, CmdLine, CursorPos)
+
+    return "%\n" . join(getcompletion(a:ArgLead, 'file'), "\n")
+
+endfunction
