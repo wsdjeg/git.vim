@@ -29,6 +29,8 @@ function! git#run(...)
         call git#merge#run(a:000[1:])
     elseif cmd ==# 'rebase'
         call git#rebase#run(a:000[1:])
+    elseif cmd ==# 'fetch'
+        call git#fetch#run(a:000[1:])
     elseif cmd ==# 'commit'
         call git#commit#run(a:000[1:])
     elseif cmd ==# 'branch'
@@ -65,5 +67,7 @@ function! git#complete(ArgLead, CmdLine, CursorPos) abort
         return git#merge#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     elseif str =~# '^Git\s\+branch\s\+.*$'
         return git#branch#complete(a:ArgLead, a:CmdLine, a:CursorPos)
+    elseif str =~# '^Git\s\+fetch\s\+.*$'
+        return git#fetch#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     endif
 endfunction
