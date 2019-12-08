@@ -2,7 +2,11 @@ let s:JOB = SpaceVim#api#import('job')
 let s:BUFFER = SpaceVim#api#import('vim#buffer')
 
 function! git#commit#run(...)
-    let s:bufnr = s:openCommitBuffer()
+    if index(a:1, '-m') ==# -1
+        let s:bufnr = s:openCommitBuffer()
+    else
+        let s:bufnr = -1
+    endif
     let s:lines = []
     if empty(a:1)
         let cmd = ['git', '--no-pager', '-c',
@@ -11,7 +15,20 @@ function! git#commit#run(...)
                     \ '-C', 
                     \ expand(getcwd(), ':p'),
                     \ 'commit', '--edit']
+    elseif index(a:1, '-m') != -1
+        let cmd =  ['git', '--no-pager', '-c',
+                    \ 'core.editor=cat', '-c',
+                    \ 'color.status=always',
+                    \ '-C', 
+                    \ expand(getcwd(), ':p'),
+                    \ 'commit'] + a:1
     else
+        let cmd =  ['git', '--no-pager', '-c',
+                    \ 'core.editor=cat', '-c',
+                    \ 'color.status=always',
+                    \ '-C', 
+                    \ expand(getcwd(), ':p'),
+                    \ 'commit',] + a:1
     endif
     call s:JOB.start(cmd,
                 \ {
@@ -37,7 +54,15 @@ function! s:on_stderr(id, data, event) abort
 endfunction
 function! s:on_exit(id, data, event) abort
     call git#logger#info('git-exit exit data:' . string(a:data))
-    call s:BUFFER.buf_set_lines(s:bufnr, 0 , -1, 0, s:lines)
+    if s:bufnr == -1
+        if a:data ==# 0
+            echo 'commit done!'
+        else
+            echo 'commit failed!'
+        endif
+    else
+        call s:BUFFER.buf_set_lines(s:bufnr, 0 , -1, 0, s:lines)
+    endif
 endfunction
 
 function! s:openCommitBuffer() abort
