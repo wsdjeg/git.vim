@@ -40,7 +40,16 @@ function! s:on_stderr(id, data, event) abort
 endfunction
 
 function! git#push#complete(ArgLead, CmdLine, CursorPos)
+    let str = a:CmdLine[:a:CursorPos-1]
+    if str =~# '^Git\s\+push\s\+.*$'
+        return join(s:remotes(), "\n")
+    else
+        return s:remote_branch()
+    endif
+endfunction
 
+function! s:remotes() abort
+    return map(systemlist('git remote'), 'trim(v:val)')
 endfunction
 
 if !has('nvim')
