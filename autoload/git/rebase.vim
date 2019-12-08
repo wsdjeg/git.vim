@@ -5,7 +5,7 @@ function! git#rebase#run(...)
     let s:bufnr = s:openRebaseCommitBuffer()
     let s:lines = []
     if !empty(a:1)
-        let cmd = ['git', 'rebase', '--edit'] + a:1
+        let cmd = ['git', 'rebase'] + a:1
     else
         finish
     endif
