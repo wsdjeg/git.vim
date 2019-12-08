@@ -40,7 +40,27 @@ function! s:on_stderr(id, data, event) abort
 endfunction
 
 function! git#push#complete(ArgLead, CmdLine, CursorPos)
+    let str = a:CmdLine[:a:CursorPos-1]
+    if str =~# '^Git\s\+push\s\+[^ ]*$'
+        return join(s:remotes(), "\n")
+    else
+        let remote = matchstr(str, '\(Git\s\+push\s\+\)\@<=[^ ]*')
+        return s:remote_branch(remote)
+    endif
+endfunction
 
+function! s:remotes() abort
+    return map(systemlist('git remote'), 'trim(v:val)')
+endfunction
+
+function! s:remote_branch(remote) abort
+    let branchs = systemlist('git branch -a')
+    if v:shell_error
+        return ''
+    else
+        let branchs = join(map(filter(branchs, 'v:val =~ "\s*remotes/" . a:remote . "/[^ ]*$"'), 'trim(v:val)[len(a:remote) + 9:]'), "\n")
+        return branchs
+    endif
 endfunction
 
 if !has('nvim')
