@@ -21,9 +21,24 @@ function! s:on_exit(id, data, event) abort
     endif
 endfunction
 
-function! git#checkout#complete(ArgLead, CmdLine, CursorPos)
+function! s:options() abort
+    return join([
+                \ '-m',
+                \ '-b',
+                \ ], "\n")
+endfunction
 
-    return "%\n" . join(getcompletion(a:ArgLead, 'file'), "\n")
+function! git#checkout#complete(ArgLead, CmdLine, CursorPos)
+    if a:ArgLead =~# '^-'
+        return s:options()
+    endif
+    let branchs = systemlist('git branch')
+    if v:shell_error
+        return ''
+    else
+        let branchs = join(map(filter(branchs, 'v:val !~ "^*"'), 'trim(v:val)'), "\n")
+        return branchs
+    endif
 
 endfunction
 
