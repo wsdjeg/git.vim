@@ -5,7 +5,12 @@ function! git#rebase#run(...)
     let s:bufnr = s:openRebaseCommitBuffer()
     let s:lines = []
     if !empty(a:1)
-        let cmd = ['git', 'rebase'] + a:1
+        let cmd = ['git', '--no-pager', '-c',
+                    \ 'core.editor=cat', '-c',
+                    \ 'color.status=always',
+                    \ '-C', 
+                    \ expand(getcwd(), ':p'),
+                    \ 'rebase'] + a:1
     else
         finish
     endif
