@@ -1,5 +1,8 @@
 # git.vim
-Use git in vim
+
+[![](https://spacevim.org/img/build-with-SpaceVim.svg)](https://spacevim.org)
+
+Use git in SpaceVim
 
 ## usage
 
@@ -7,8 +10,8 @@ Use git in vim
 - `:Git add .`: stage all files
 - `:Git commit`: edit commit message
 - `:Git push`: push to remote
-
-
+- `:Git fetch`: fetch remotes
+- `:Git checkout`: checkout branches
 
 ## Screenshot
 
