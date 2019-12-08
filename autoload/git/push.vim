@@ -44,7 +44,7 @@ function! git#push#complete(ArgLead, CmdLine, CursorPos)
     if str =~# '^Git\s\+push\s\+[^ ]*$'
         return join(s:remotes(), "\n")
     else
-        let remote = matchstr(str, '')
+        let remote = matchstr(str, '\(Git\s\+push\s\+\)\@<=[^ ]*')
         return s:remote_branch(remote)
     endif
 endfunction

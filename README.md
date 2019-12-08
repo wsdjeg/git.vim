@@ -24,6 +24,10 @@ Use git in vim
 
 ![git-push](https://user-images.githubusercontent.com/13142418/70335203-d0bb3900-1881-11ea-8bf3-85b248c20dae.png)
 
+**`:Git push`** completion
+
+![git-push-complete](https://user-images.githubusercontent.com/13142418/70384670-7de69c00-19bd-11ea-91fe-9e8ced9775db.gif)
+
 **`:Git diff`**
 
 ![git-diff](https://user-images.githubusercontent.com/13142418/70369625-7c52a080-18f7-11ea-9ee9-a1ba499b3d1f.png)
