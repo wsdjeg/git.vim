@@ -25,7 +25,7 @@ function! s:on_stdout(id, data, event) abort
     for data in a:data
         call git#logger#info('git-log stdout:' . data)
     endfor
-    let s:lines += a:data
+    let s:lines += filter(a:data, '!empty(v:val)')
 endfunction
 function! s:on_stderr(id, data, event) abort
     for data in a:data
