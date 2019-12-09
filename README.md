@@ -12,6 +12,7 @@ Use git in SpaceVim
 - `:Git push`: push to remote
 - `:Git fetch`: fetch remotes
 - `:Git checkout`: checkout branches
+- `:Git log %`: view git log of current file
 
 ## Screenshot
 
@@ -35,4 +36,6 @@ Use git in SpaceVim
 
 ![git-diff](https://user-images.githubusercontent.com/13142418/70369625-7c52a080-18f7-11ea-9ee9-a1ba499b3d1f.png)
 
+**`:Git log`**
 
+![git-log](https://user-images.githubusercontent.com/13142418/70444048-39015900-1ad4-11ea-9522-1711c0c67098.png)
