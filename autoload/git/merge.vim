@@ -81,12 +81,26 @@ endfunction
 function! s:args_with_two() abort
     return join([
                 \ '--stat',
+                \ '--edit',
+                \ '--ff',
+                \ '--ff-only',
                 \ '--abort',
                 \ ], "\n")
 endfunction
+
+function! s:args_with_one() abort
+    return join([
+                \ '-m',
+                \ '-e',
+                \ ], "\n")
+    
+endfunction
+
 function! git#merge#complete(ArgLead, CmdLine, CursorPos)
     if a:ArgLead =~# '^--'
         return s:args_with_two()
+    elseif a:ArgLead =~# '^-'
+        return s:args_with_one()
     endif
 
     return join(s:unmerged_branchs(), "\n")
