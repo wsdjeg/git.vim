@@ -23,6 +23,8 @@ function! git#run(...)
         call git#status#run(a:000[1:])
     elseif cmd ==# 'diff'
         call git#diff#run(a:000[1:])
+    elseif cmd ==# 'log'
+        call git#log#run(a:000[1:])
     elseif cmd ==# 'reset'
         call git#reset#run(a:000[1:])
     elseif cmd ==# 'merge'
