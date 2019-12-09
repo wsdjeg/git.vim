@@ -1,11 +1,13 @@
 let s:JOB = SpaceVim#api#import('job')
 let s:BUFFER = SpaceVim#api#import('vim#buffer')
 
+let g:git_log_pretty = "tformat:%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%an %ad)%Creset"
+
 function! git#log#run(...)
     if len(a:1) == 1 && a:1[0] ==# '%'
-        let cmd = ['git', 'log', expand('%')] 
+        let cmd = ['git', 'log', '--graph', '--date=relative', '--pretty=' . g:git_log_pretty, expand('%')] 
     else
-        let cmd = ['git', 'log'] + a:1
+        let cmd = ['git', 'log', '--graph', '--date=relative', '--pretty=' . g:git_log_pretty] + a:1
     endif
     let s:bufnr = s:openLogBuffer()
     let s:lines = []
