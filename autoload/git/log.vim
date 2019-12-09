@@ -38,15 +38,16 @@ endfunction
 
 
 function! s:openLogBuffer() abort
-    new git://log
+    edit git://log
     normal! "_dd
     setl nobuflisted
     setl nomodifiable
     setl nonumber norelativenumber
     setl buftype=nofile
+    setl bufhidden=wipe
     setf git-log
     " setl syntax=diff
-    nnoremap <buffer><silent> q :bd!<CR>
+    nnoremap <buffer><silent> q :b#<CR>
     return bufnr()
 endfunction
 
