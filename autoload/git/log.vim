@@ -48,7 +48,6 @@ function! s:openLogBuffer() abort
     setl buftype=nofile
     setl bufhidden=wipe
     setf git-log
-    " setl syntax=diff
     nnoremap <buffer><silent> q :b#<CR>
     return bufnr()
 endfunction
