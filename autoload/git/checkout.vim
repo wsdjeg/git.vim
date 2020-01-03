@@ -15,7 +15,8 @@ endfunction
 function! s:on_exit(id, data, event) abort
     call git#logger#info('git-checkout exit data:' . string(a:data))
     if a:data ==# 0
-        echo 'done!'
+        echo 'checkout done'
+        call git#branch#detect()
     else
         echo 'failed!'
     endif

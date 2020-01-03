@@ -54,7 +54,10 @@ function! s:update_branch_name() abort
                 \ )
 endfunction
 function! s:on_stdout_show_branch(id, data, event) abort
-    let s:branch = trim(join(a:data, ""))
+    let b = trim(join(a:data, ""))
+    if !empty(b)
+        let s:branch = b
+    endif
 endfunction
 function! git#branch#current()
     if empty(s:branch)
