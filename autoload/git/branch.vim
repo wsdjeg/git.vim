@@ -44,11 +44,25 @@ function! git#branch#complete(ArgLead, CmdLine, CursorPos)
 
 endfunction
 
+let s:branch = ''
+function! s:update_branch_name() abort
+    let cmd = 'git branch --show-current'
+    call s:JOB.start(cmd,
+                \ {
+                \ 'on_stdout' : function('s:on_stdout_show_branch'),
+                \ }
+                \ )
+endfunction
+function! s:on_stdout_show_branch(id, data, event) abort
+    let s:branch = trim(join(a:data, ""))
+endfunction
 function! git#branch#current()
-    let head = system('git branch --show-current')
-    if !v:shell_error
-        return trim(head)
-    else
-        return ''
+    if empty(s:branch)
+        call s:update_branch_name()
     endif
+    return s:branch
+endfunction
+
+function! git#branch#detect()
+    call s:update_branch_name()
 endfunction
