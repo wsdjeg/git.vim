@@ -48,8 +48,8 @@ function! s:openLogBuffer() abort
     setl buftype=nofile
     setl bufhidden=wipe
     setf git-log
-    exe 'nnoremap <buffer><silent> q :b' . bp . '<Cr>'
     nnoremap <buffer><silent> <Cr> :call <SID>show_commit()<CR>
+    nnoremap <buffer><silent> q :call <SID>close_log_win()<CR>
     return bufnr()
 endfunction
 
@@ -59,12 +59,15 @@ function! git#log#complete(ArgLead, CmdLine, CursorPos)
 
 endfunction
 
+let s:show_commit_buffer = -1
 function! s:show_commit() abort
     let commit = matchstr(getline('.'), '\(^*\s\+\)\@<=[a-z0-9A-Z]*')
     if empty(commit)
         return
     endif
-    let s:show_commit_buffer = s:openShowCommitBuffer()
+    if !bufexists(s:show_commit_buffer)
+        let s:show_commit_buffer = s:openShowCommitBuffer()
+    endif
     let cmd = ['git', 'show', commit]
     let s:show_lines = []
     call s:JOB.start(cmd,
@@ -104,4 +107,15 @@ function! s:openShowCommitBuffer() abort
     setl syntax=diff
     nnoremap <buffer><silent> q :q<CR>
     return bufnr()
+endfunction
+
+function! s:close_log_win() abort
+    call s:closeShowCommitWindow()
+    bp
+endfunction
+
+function! s:closeShowCommitWindow() abort
+    if bufexists(s:show_commit_buffer)
+        exe 'bd ' . s:show_commit_buffer
+    endif
 endfunction
