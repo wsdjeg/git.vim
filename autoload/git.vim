@@ -83,6 +83,8 @@ function! git#complete(ArgLead, CmdLine, CursorPos) abort
         return git#fetch#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     elseif str =~# '^Git\s\+config\s\+.*$'
         return git#config#complete(a:ArgLead, a:CmdLine, a:CursorPos)
+    elseif str =~# '^Git\s\+reflog\s\+.*$'
+        return git#reflog#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     else
         return ''
     endif
