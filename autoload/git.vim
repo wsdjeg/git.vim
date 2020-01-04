@@ -59,7 +59,9 @@ endfunction
 function! git#complete(ArgLead, CmdLine, CursorPos) abort
     let str = a:CmdLine[:a:CursorPos-1]
     if str =~# '^Git\s\+[a-zA-Z]*$'
-        return join(['add', 'push', 'status', 'commit', 'diff', 'merge', 'rebase', 'branch', 'checkout', 'fetch', 'reset', 'log'],
+        return join(['add', 'push', 'status', 'commit', 'diff',
+                    \ 'merge', 'rebase', 'branch', 'checkout',
+                    \ 'fetch', 'reset', 'log', 'config'],
                     \ "\n")
     elseif str =~# '^Git\s\+add\s\+.*$'
         return git#add#complete(a:ArgLead, a:CmdLine, a:CursorPos)
