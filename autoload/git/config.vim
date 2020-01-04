@@ -58,7 +58,51 @@ endfunction
 
 function! s:keys() abort
     return [
-                \ ]
+                \ 'http.sslcainfo',
+                \ 'http.sslbackend',
+                \ 'diff.astextplain.textconv',
+                \ 'core.autocrlf',
+                \ 'core.fscache',
+                \ 'core.symlinks',
+                \ 'credential.helper',
+                \ 'user.name',
+                \ 'user.email',
+                \ 'user.signingkey',
+                \ 'push.default',
+                \ 'merge.tool',
+                \ 'diff.tool',
+                \ 'commit.tool',
+                \ 'difftool.prompt',
+                \ 'color.ui',
+                \ 'color.branch',
+                \ 'color.status',
+                \ 'core.editor',
+                \ 'core.excludesfile',
+                \ 'core.autocrlf',
+                \ 'core.filemode',
+                \ 'core.safecrlf',
+                \ 'core.ignorecase',
+                \ 'mergetool.prompt',
+                \ 'mergetool.vimdiff.cmd',
+                \ 'http.postbuffer',
+                \ 'core.repositoryformatversion',
+                \ 'core.filemode',
+                \ 'core.bare',
+                \ 'core.logallrefupdates',
+                \ 'core.symlinks',
+                \ 'core.ignorecase',
+                \ 'remote.origin.url',
+                \ 'remote.origin.fetch',
+                \ 'branch.master.remote',
+                \ 'branch.master.merge',
+                \ 'branch.dev.remote',
+                \ 'branch.dev.merge',
+                \ 'branch.develop.remote',
+                \ 'branch.develop.merge',
+                \ 'branch.notiapi.remote',
+                \ 'branch.notiapi.merge',
+                \ 'branch.rebase.remote',
+                \ 'branch.rebase.merge']
 endfunction
 
 function! git#config#complete(ArgLead, CmdLine, CursorPos)
@@ -66,7 +110,9 @@ function! git#config#complete(ArgLead, CmdLine, CursorPos)
         return s:options()
     endif
     let str = a:CmdLine[:a:CursorPos-1]
-    if str =~# '^Git\s\+config\s\+[^ ]*$'
+    if str =~# '^Git\s\+config\s\+[^ ]*$' ||
+                \ str =~# '^Git\s\+config\s\+--global\s\+[^ ]*$' ||
+                \ str =~# '^Git\s\+config\s\+--user\s\+[^ ]*$'
         return join(s:keys(), "\n")
     else
         return ''
