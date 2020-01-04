@@ -27,6 +27,8 @@ function! git#run(...)
         call git#diff#run(a:000[1:])
     elseif cmd ==# 'log'
         call git#log#run(a:000[1:])
+    elseif cmd ==# 'reflog'
+        call git#reflog#run(a:000[1:])
     elseif cmd ==# 'reset'
         call git#reset#run(a:000[1:])
     elseif cmd ==# 'merge'
