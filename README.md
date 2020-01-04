@@ -13,6 +13,9 @@ Use git in SpaceVim
 - `:Git fetch`: fetch remotes
 - `:Git checkout`: checkout branches
 - `:Git log %`: view git log of current file
+- `:Git config`: list all git config
+- `:Git reflog`: manage reflog information
+- `:Git branch`: list, create, or delete branches
 
 ## Screenshot
 
