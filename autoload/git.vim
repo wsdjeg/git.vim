@@ -21,6 +21,8 @@ function! git#run(...)
         call git#push#run(a:000[1:])
     elseif cmd ==# 'status'
         call git#status#run(a:000[1:])
+    elseif cmd ==# 'config'
+        call git#config#run(a:000[1:])
     elseif cmd ==# 'diff'
         call git#diff#run(a:000[1:])
     elseif cmd ==# 'log'
