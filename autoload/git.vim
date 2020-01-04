@@ -79,6 +79,8 @@ function! git#complete(ArgLead, CmdLine, CursorPos) abort
         return git#checkout#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     elseif str =~# '^Git\s\+fetch\s\+.*$'
         return git#fetch#complete(a:ArgLead, a:CmdLine, a:CursorPos)
+    elseif str =~# '^Git\s\+config\s\+.*$'
+        return git#config#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     else
         return ''
     endif

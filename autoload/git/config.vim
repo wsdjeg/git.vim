@@ -49,9 +49,28 @@ function! s:openConfigBuffer() abort
     return bufnr()
 endfunction
 
-function! git#config#complete(ArgLead, CmdLine, CursorPos)
+function! s:options() abort
+    return join([
+                \ '--global',
+                \ '--user',
+                \ ], "\n")
+endfunction
 
-    return "%\n" . join(getcompletion(a:ArgLead, 'file'), "\n")
+function! s:keys() abort
+    return [
+                \ ]
+endfunction
+
+function! git#config#complete(ArgLead, CmdLine, CursorPos)
+    if a:ArgLead =~# '^-'
+        return s:options()
+    endif
+    let str = a:CmdLine[:a:CursorPos-1]
+    if str =~# '^Git\s\+config\s\+[^ ]*$'
+        return join(s:keys(), "\n")
+    else
+        return ''
+    endif
 
 endfunction
 
