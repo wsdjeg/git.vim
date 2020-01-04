@@ -11,3 +11,5 @@ let g:loaded_git = 1
 ""
 " Run git command asynchronously
 command! -nargs=+ -complete=custom,git#complete Git call git#run(<f-args>)
+
+call SpaceVim#plugins#projectmanager#reg_callback(function('git#branch#detect'))
