@@ -63,7 +63,7 @@ function! git#complete(ArgLead, CmdLine, CursorPos) abort
     if str =~# '^Git\s\+[a-zA-Z]*$'
         return join(['add', 'push', 'status', 'commit', 'diff',
                     \ 'merge', 'rebase', 'branch', 'checkout',
-                    \ 'fetch', 'reset', 'log', 'config'],
+                    \ 'fetch', 'reset', 'log', 'config', 'reflog'],
                     \ "\n")
     elseif str =~# '^Git\s\+add\s\+.*$'
         return git#add#complete(a:ArgLead, a:CmdLine, a:CursorPos)
