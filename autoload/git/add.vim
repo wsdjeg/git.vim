@@ -1,3 +1,12 @@
+""
+" @section git-add, add
+" @parentsection commands
+" This commands is to add file contents to the index. For example, add current
+" file to the index.
+" >
+"   :Git add %
+" <
+
 let s:JOB = SpaceVim#api#import('job')
 
 function! git#add#run(files)
