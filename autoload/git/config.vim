@@ -8,7 +8,6 @@ function! git#config#run(argvs)
     else
         let cmd = ['git', 'config'] + a:argvs
     endif
-    let s:bufnr = s:openConfigBuffer()
     let s:lines = []
     call git#logger#info('git-config cmd:' . string(cmd))
     call s:JOB.start(cmd,
@@ -30,15 +29,16 @@ endfunction
 function! s:on_exit(id, data, event) abort
     call git#logger#info('git-config exit data:' . string(a:data))
     if a:data ==# 0
+        let s:bufnr = s:openConfigBuffer(len(s:lines))
         call s:BUFFER.buf_set_lines(s:bufnr, 0 , -1, 0, s:lines)
-        echo 'done!'
     else
         echo 'failed!'
     endif
 endfunction
 
-function! s:openConfigBuffer() abort
-    10split git://config
+function! s:openConfigBuffer(height) abort
+    let h = a:height > 10 ? 10 : a:height
+    exe h . 'split git://config'
     normal! "_dd
     setl nobuflisted
     setl nomodifiable
