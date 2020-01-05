@@ -50,15 +50,18 @@ function! s:openBlameWindow() abort
     setl nonumber norelativenumber
     setl buftype=nofile
     setf git-blame
+    setlocal bufhidden=wipe
     nnoremap <buffer><silent> q :bd!<CR>
     return bufnr()
 endfunction
 
 function! s:openBlameShowWindow(fname) abort
-    exe 'tabedit git://blame:show/' . a:fname
+    exe 'rightbelow vsplit git://blame:show/' . a:fname
     normal! "_dd
     setl nobuflisted
     setl nomodifiable
+    setl buftype=nofile
+    setlocal bufhidden=wipe
     nnoremap <buffer><silent> q :bd!<CR>
     return bufnr()
 endfunction
@@ -83,8 +86,8 @@ function! s:parser(lines) abort
             call extend(obj, {'summary' : line[8:]})
         elseif line =~# '^filename '
             call extend(obj, {'filename' : line[9:]})
-        elseif line =~# '^ '
-            call extend(obj, {'line' : line[5:]})
+        elseif line =~# '^\t'
+            call extend(obj, {'line' : line[1:]})
         else
             if !empty(obj) && has_key(obj, 'summary') && has_key(obj, 'line')
                 call add(rst, obj)
