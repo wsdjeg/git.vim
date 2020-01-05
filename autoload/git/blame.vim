@@ -34,7 +34,10 @@ endfunction
 function! s:on_exit(id, data, event) abort
     call git#logger#info('git-blame exit data:' . string(a:data))
     let rst = s:parser(s:lines)
-    call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, map(rst, 'v:val.summary'))
+    call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.summary'))
+    let fname = rst[0].filename
+    let s:blame_show_buffer_nr = s:openBlameShowWindow(fname)
+    call s:BUFFER.buf_set_lines(s:blame_show_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.line'))
 endfunction
 
 
@@ -43,6 +46,7 @@ function! s:openBlameWindow() abort
     normal! "_dd
     setl nobuflisted
     setl nomodifiable
+    setl scrollbind
     setl nonumber norelativenumber
     setl buftype=nofile
     setf git-blame
@@ -50,6 +54,14 @@ function! s:openBlameWindow() abort
     return bufnr()
 endfunction
 
+function! s:openBlameShowWindow(fname) abort
+    exe 'tabedit git://blame:show/' . a:fname
+    normal! "_dd
+    setl nobuflisted
+    setl nomodifiable
+    nnoremap <buffer><silent> q :bd!<CR>
+    return bufnr()
+endfunction
 
 " 1cca0b8676d664d2ea2f9b0756d41967fc8481fb 1 1 5
 " author Shidong Wang
@@ -69,9 +81,12 @@ function! s:parser(lines) abort
     for line in a:lines
         if line =~# '^summary '
             call extend(obj, {'summary' : line[8:]})
-        elseif line =~# '^author '
+        elseif line =~# '^filename '
+            call extend(obj, {'filename' : line[9:]})
+        elseif line =~# '^ '
+            call extend(obj, {'line' : line[5:]})
         else
-            if !empty(obj)
+            if !empty(obj) && has_key(obj, 'summary')
                 call add(rst, obj)
             endif
             let obj = {}
