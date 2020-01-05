@@ -1,5 +1,6 @@
 let s:JOB = SpaceVim#api#import('job')
 let s:BUFFER = SpaceVim#api#import('vim#buffer')
+let s:STRING = SpaceVim#api#import('data#string')
 
 function! git#blame#run(...)
     if len(a:1) == 0
@@ -7,7 +8,6 @@ function! git#blame#run(...)
     else
         let cmd = ['git', 'blame', '--line-porcelain'] + a:1
     endif
-    let s:blame_buffer_nr = s:openBlameWindow()
     let s:lines = []
     call git#logger#info('git-blame cmd:' . string(cmd))
     call s:JOB.start(cmd,
@@ -29,15 +29,17 @@ function! s:on_stderr(id, data, event) abort
     for data in a:data
         call git#logger#info('git-blame stderr:' . data)
     endfor
-    let s:lines += a:data
 endfunction
 function! s:on_exit(id, data, event) abort
     call git#logger#info('git-blame exit data:' . string(a:data))
     let rst = s:parser(s:lines)
-    call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.summary'))
-    let fname = rst[0].filename
-    let s:blame_show_buffer_nr = s:openBlameShowWindow(fname)
-    call s:BUFFER.buf_set_lines(s:blame_show_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.line'))
+    if !empty(rst)
+        let s:blame_buffer_nr = s:openBlameWindow()
+        call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 's:STRING.fill(v:val.summary, 40) . repeat(" ", 4) . strftime("%Y %b %d %X", v:val.time)'))
+        let fname = rst[0].filename
+        let s:blame_show_buffer_nr = s:openBlameShowWindow(fname)
+        call s:BUFFER.buf_set_lines(s:blame_show_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.line'))
+    endif
 endfunction
 
 
@@ -46,9 +48,9 @@ function! s:openBlameWindow() abort
     normal! "_dd
     setl nobuflisted
     setl nomodifiable
-    setl scrollbind
     setl nonumber norelativenumber
     setl buftype=nofile
+    setl scrollbind
     setf git-blame
     setlocal bufhidden=wipe
     nnoremap <buffer><silent> q :bd!<CR>
@@ -60,12 +62,14 @@ function! s:openBlameShowWindow(fname) abort
     normal! "_dd
     setl nobuflisted
     setl nomodifiable
+    setl scrollbind
     setl buftype=nofile
     setlocal bufhidden=wipe
     nnoremap <buffer><silent> q :bd!<CR>
     return bufnr()
 endfunction
 
+" revision
 " 1cca0b8676d664d2ea2f9b0756d41967fc8481fb 1 1 5
 " author Shidong Wang
 " author-mail <wsdjeg@outlook.com>
@@ -77,18 +81,21 @@ endfunction
 " committer-tz +0800
 " summary Add git blame support
 " filename autoload/git/blame.vim
-	" let s:JOB = SpaceVim#api#import('job')
+" let s:JOB = SpaceVim#api#import('job')
 function! s:parser(lines) abort
     let rst = []
     let obj = {}
     for line in a:lines
-        if line =~# '^summary '
+        if line =~# '^[a-zA-Z0-9]\{40}'
+            call extend(obj, {'revision' : line[:39]})
+        elseif line =~# '^summary'
             call extend(obj, {'summary' : line[8:]})
-        elseif line =~# '^filename '
+        elseif line =~# '^filename'
             call extend(obj, {'filename' : line[9:]})
+        elseif line =~# '^committer-time'
+            call extend(obj, {'time' : str2nr(line[15:])})
         elseif line =~# '^\t'
             call extend(obj, {'line' : line[1:]})
-        else
             if !empty(obj) && has_key(obj, 'summary') && has_key(obj, 'line')
                 call add(rst, obj)
             endif
