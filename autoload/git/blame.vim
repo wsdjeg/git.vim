@@ -7,7 +7,6 @@ function! git#blame#run(...)
     else
         let cmd = ['git', 'blame', '--line-porcelain'] + a:1
     endif
-    let s:blame_buffer_nr = s:openBlameWindow()
     let s:lines = []
     call git#logger#info('git-blame cmd:' . string(cmd))
     call s:JOB.start(cmd,
@@ -29,15 +28,17 @@ function! s:on_stderr(id, data, event) abort
     for data in a:data
         call git#logger#info('git-blame stderr:' . data)
     endfor
-    let s:lines += a:data
 endfunction
 function! s:on_exit(id, data, event) abort
     call git#logger#info('git-blame exit data:' . string(a:data))
     let rst = s:parser(s:lines)
-    call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.summary'))
-    let fname = rst[0].filename
-    let s:blame_show_buffer_nr = s:openBlameShowWindow(fname)
-    call s:BUFFER.buf_set_lines(s:blame_show_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.line'))
+    if !empty(rst)
+        let s:blame_buffer_nr = s:openBlameWindow()
+        call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.summary'))
+        let fname = rst[0].filename
+        let s:blame_show_buffer_nr = s:openBlameShowWindow(fname)
+        call s:BUFFER.buf_set_lines(s:blame_show_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.line'))
+    endif
 endfunction
 
 
@@ -77,14 +78,14 @@ endfunction
 " committer-tz +0800
 " summary Add git blame support
 " filename autoload/git/blame.vim
-	" let s:JOB = SpaceVim#api#import('job')
+" let s:JOB = SpaceVim#api#import('job')
 function! s:parser(lines) abort
     let rst = []
     let obj = {}
     for line in a:lines
-        if line =~# '^summary '
+        if line =~# '^summary'
             call extend(obj, {'summary' : line[8:]})
-        elseif line =~# '^filename '
+        elseif line =~# '^filename'
             call extend(obj, {'filename' : line[9:]})
         elseif line =~# '^\t'
             call extend(obj, {'line' : line[1:]})
