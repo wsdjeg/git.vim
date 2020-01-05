@@ -47,9 +47,9 @@ function! s:openBlameWindow() abort
     normal! "_dd
     setl nobuflisted
     setl nomodifiable
-    setl scrollbind
     setl nonumber norelativenumber
     setl buftype=nofile
+    setl scrollbind
     setf git-blame
     setlocal bufhidden=wipe
     nnoremap <buffer><silent> q :bd!<CR>
@@ -61,6 +61,7 @@ function! s:openBlameShowWindow(fname) abort
     normal! "_dd
     setl nobuflisted
     setl nomodifiable
+    setl scrollbind
     setl buftype=nofile
     setlocal bufhidden=wipe
     nnoremap <buffer><silent> q :bd!<CR>
