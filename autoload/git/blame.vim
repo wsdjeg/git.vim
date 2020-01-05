@@ -1,5 +1,6 @@
 let s:JOB = SpaceVim#api#import('job')
 let s:BUFFER = SpaceVim#api#import('vim#buffer')
+let s:STRING = SpaceVim#api#import('data#string')
 
 function! git#blame#run(...)
     if len(a:1) == 0
@@ -34,7 +35,7 @@ function! s:on_exit(id, data, event) abort
     let rst = s:parser(s:lines)
     if !empty(rst)
         let s:blame_buffer_nr = s:openBlameWindow()
-        call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.summary'))
+        call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 's:STRING.fill(v:val.summary, 50) . repeat(" ", 4) . strftime("%H:%M:%S", v:val.time)'))
         let fname = rst[0].filename
         let s:blame_show_buffer_nr = s:openBlameShowWindow(fname)
         call s:BUFFER.buf_set_lines(s:blame_show_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.line'))
@@ -91,6 +92,8 @@ function! s:parser(lines) abort
             call extend(obj, {'summary' : line[8:]})
         elseif line =~# '^filename'
             call extend(obj, {'filename' : line[9:]})
+        elseif line =~# '^committer-time'
+            call extend(obj, {'time' : str2nr(line[15:])})
         elseif line =~# '^\t'
             call extend(obj, {'line' : line[1:]})
             if !empty(obj) && has_key(obj, 'summary') && has_key(obj, 'line')
