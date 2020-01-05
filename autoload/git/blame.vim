@@ -2,6 +2,8 @@ let s:JOB = SpaceVim#api#import('job')
 let s:BUFFER = SpaceVim#api#import('vim#buffer')
 let s:STRING = SpaceVim#api#import('data#string')
 
+let s:blame_buffer_nr = -1
+let s:blame_show_buffer_nr = -1
 function! git#blame#run(...)
     if len(a:1) == 0
         let cmd = ['git', 'blame', '--line-porcelain', expand('%')] 
@@ -34,10 +36,15 @@ function! s:on_exit(id, data, event) abort
     call git#logger#info('git-blame exit data:' . string(a:data))
     let rst = s:parser(s:lines)
     if !empty(rst)
-        let s:blame_buffer_nr = s:openBlameWindow()
+        if !bufexists(s:blame_buffer_nr)
+            let s:blame_buffer_nr = s:openBlameWindow()
+        endif
+        call setbufvar(s:blame_buffer_nr, 'git_blame_info', rst)
         call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 's:STRING.fill(v:val.summary, 40) . repeat(" ", 4) . strftime("%Y %b %d %X", v:val.time)'))
         let fname = rst[0].filename
-        let s:blame_show_buffer_nr = s:openBlameShowWindow(fname)
+        if !bufexists(s:blame_show_buffer_nr)
+            let s:blame_show_buffer_nr = s:openBlameShowWindow(fname)
+        endif
         call s:BUFFER.buf_set_lines(s:blame_show_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.line'))
     endif
 endfunction
@@ -53,7 +60,8 @@ function! s:openBlameWindow() abort
     setl scrollbind
     setf git-blame
     setlocal bufhidden=wipe
-    nnoremap <buffer><silent> q :bd!<CR>
+    nnoremap <buffer><silent> <Cr> :call <SID>open_previous()<CR>
+    nnoremap <buffer><silent> q :call <SID>close_blame_win()<CR>
     return bufnr()
 endfunction
 
@@ -67,6 +75,17 @@ function! s:openBlameShowWindow(fname) abort
     setlocal bufhidden=wipe
     nnoremap <buffer><silent> q :bd!<CR>
     return bufnr()
+endfunction
+
+function! s:close_blame_win() abort
+    call s:closeBlameShowWindow()
+    q
+endfunction
+
+function! s:closeBlameShowWindow() abort
+    if bufexists(s:blame_show_buffer_nr)
+        exe 'bd ' . s:blame_show_buffer_nr
+    endif
 endfunction
 
 " revision
@@ -92,6 +111,8 @@ function! s:parser(lines) abort
             call extend(obj, {'summary' : line[8:]})
         elseif line =~# '^filename'
             call extend(obj, {'filename' : line[9:]})
+        elseif line =~# '^previous'
+            call extend(obj, {'previous' : line[9:48]})
         elseif line =~# '^committer-time'
             call extend(obj, {'time' : str2nr(line[15:])})
         elseif line =~# '^\t'
@@ -103,6 +124,19 @@ function! s:parser(lines) abort
         endif
     endfor
     return rst
+endfunction
+
+function! s:open_previous() abort
+    let rst = get(b:, 'git_blame_info', [])
+    if empty(rst)
+        return
+    endif
+    let blame_info = rst[line('.') - 1]
+    if has_key(blame_info, 'previous')
+        exe 'Git blame' blame_info.previous blame_info.filename
+    else
+        echo 'No related parent commit exists'
+    endif
 endfunction
 
 function! git#blame#complete(ArgLead, CmdLine, CursorPos)
