@@ -133,6 +133,7 @@ let s:blame_history = []
 function! s:back() abort
     if empty(s:blame_history)
         echo 'No navigational history is found'
+        return
     endif
     let [rev, fname] = remove(s:blame_history, -1)
     exe 'Git blame' rev fname
