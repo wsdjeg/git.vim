@@ -67,6 +67,7 @@ function! s:openBlameShowWindow(fname) abort
     return bufnr()
 endfunction
 
+" revision
 " 1cca0b8676d664d2ea2f9b0756d41967fc8481fb 1 1 5
 " author Shidong Wang
 " author-mail <wsdjeg@outlook.com>
@@ -83,13 +84,14 @@ function! s:parser(lines) abort
     let rst = []
     let obj = {}
     for line in a:lines
-        if line =~# '^summary'
+        if line =~# '^[a-zA-Z0-9]\{40}'
+            call extend(obj, {'revision' : line[:39]})
+        elseif line =~# '^summary'
             call extend(obj, {'summary' : line[8:]})
         elseif line =~# '^filename'
             call extend(obj, {'filename' : line[9:]})
         elseif line =~# '^\t'
             call extend(obj, {'line' : line[1:]})
-        else
             if !empty(obj) && has_key(obj, 'summary') && has_key(obj, 'line')
                 call add(rst, obj)
             endif
