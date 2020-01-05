@@ -35,7 +35,7 @@ function! s:on_exit(id, data, event) abort
     let rst = s:parser(s:lines)
     if !empty(rst)
         let s:blame_buffer_nr = s:openBlameWindow()
-        call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 's:STRING.fill(v:val.summary, 50) . repeat(" ", 4) . strftime("%H:%M:%S", v:val.time)'))
+        call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 's:STRING.fill(v:val.summary, 40) . repeat(" ", 4) . strftime("%Y %b %d %X", v:val.time)'))
         let fname = rst[0].filename
         let s:blame_show_buffer_nr = s:openBlameShowWindow(fname)
         call s:BUFFER.buf_set_lines(s:blame_show_buffer_nr, 0 , -1, 0, map(deepcopy(rst), 'v:val.line'))
