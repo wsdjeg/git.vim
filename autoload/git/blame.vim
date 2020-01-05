@@ -86,7 +86,7 @@ function! s:parser(lines) abort
         elseif line =~# '^ '
             call extend(obj, {'line' : line[5:]})
         else
-            if !empty(obj) && has_key(obj, 'summary')
+            if !empty(obj) && has_key(obj, 'summary') && has_key(obj, 'line')
                 call add(rst, obj)
             endif
             let obj = {}
