@@ -61,6 +61,7 @@ function! s:openBlameWindow() abort
     setf git-blame
     setlocal bufhidden=wipe
     nnoremap <buffer><silent> <Cr> :call <SID>open_previous()<CR>
+    nnoremap <buffer><silent> <BS> :call <SID>back()<CR>
     nnoremap <buffer><silent> q :call <SID>close_blame_win()<CR>
     return bufnr()
 endfunction
@@ -78,6 +79,7 @@ function! s:openBlameShowWindow(fname) abort
 endfunction
 
 function! s:close_blame_win() abort
+    let s:blame_history = []
     call s:closeBlameShowWindow()
     q
 endfunction
@@ -126,6 +128,16 @@ function! s:parser(lines) abort
     return rst
 endfunction
 
+let s:blame_history = []
+
+function! s:back() abort
+    if empty(s:blame_history)
+        echo 'No navigational history is found'
+    endif
+    let [rev, fname] = remove(s:blame_history, -1)
+    exe 'Git blame' rev fname
+endfunction
+
 function! s:open_previous() abort
     let rst = get(b:, 'git_blame_info', [])
     if empty(rst)
@@ -133,6 +145,7 @@ function! s:open_previous() abort
     endif
     let blame_info = rst[line('.') - 1]
     if has_key(blame_info, 'previous')
+        call add(s:blame_history, [blame_info.revision, blame_info.filename])
         exe 'Git blame' blame_info.previous blame_info.filename
     else
         echo 'No related parent commit exists'
