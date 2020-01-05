@@ -33,6 +33,8 @@ function! git#run(...)
         call git#reset#run(a:000[1:])
     elseif cmd ==# 'merge'
         call git#merge#run(a:000[1:])
+    elseif cmd ==# 'blame'
+        call git#blame#run(a:000[1:])
     elseif cmd ==# 'rebase'
         call git#rebase#run(a:000[1:])
     elseif cmd ==# 'fetch'
