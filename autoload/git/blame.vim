@@ -3,9 +3,9 @@ let s:BUFFER = SpaceVim#api#import('vim#buffer')
 
 function! git#blame#run(...)
     if len(a:1) == 0
-        let cmd = ['git', 'blame', expand('%')] 
+        let cmd = ['git', 'blame', '--line-porcelain', expand('%')] 
     else
-        let cmd = ['git', 'blame'] + a:1
+        let cmd = ['git', 'blame', '--line-porcelain'] + a:1
     endif
     let s:blame_buffer_nr = s:openBlameWindow()
     let s:lines = []
@@ -21,18 +21,18 @@ endfunction
 
 function! s:on_stdout(id, data, event) abort
     for data in a:data
-        call git#logger#info('git-diff stdout:' . data)
+        call git#logger#info('git-blame stdout:' . data)
     endfor
     let s:lines += a:data
 endfunction
 function! s:on_stderr(id, data, event) abort
     for data in a:data
-        call git#logger#info('git-diff stderr:' . data)
+        call git#logger#info('git-blame stderr:' . data)
     endfor
     let s:lines += a:data
 endfunction
 function! s:on_exit(id, data, event) abort
-    call git#logger#info('git-diff exit data:' . string(a:data))
+    call git#logger#info('git-blame exit data:' . string(a:data))
     call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, s:lines)
 endfunction
 
