@@ -44,8 +44,7 @@ function! s:openBlameWindow() abort
     setl nomodifiable
     setl nonumber norelativenumber
     setl buftype=nofile
-    setf git-diff
-    setl syntax=diff
+    setf git-blame
     nnoremap <buffer><silent> q :bd!<CR>
     return bufnr()
 endfunction
