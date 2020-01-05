@@ -33,7 +33,8 @@ function! s:on_stderr(id, data, event) abort
 endfunction
 function! s:on_exit(id, data, event) abort
     call git#logger#info('git-blame exit data:' . string(a:data))
-    call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, s:lines)
+    let rst = s:parser(s:lines)
+    call s:BUFFER.buf_set_lines(s:blame_buffer_nr, 0 , -1, 0, map(rst, 'v:val.summary'))
 endfunction
 
 
@@ -47,6 +48,36 @@ function! s:openBlameWindow() abort
     setf git-blame
     nnoremap <buffer><silent> q :bd!<CR>
     return bufnr()
+endfunction
+
+
+" 1cca0b8676d664d2ea2f9b0756d41967fc8481fb 1 1 5
+" author Shidong Wang
+" author-mail <wsdjeg@outlook.com>
+" author-time 1578202864
+" author-tz +0800
+" committer Shidong Wang
+" committer-mail <wsdjeg@outlook.com>
+" committer-time 1578202864
+" committer-tz +0800
+" summary Add git blame support
+" filename autoload/git/blame.vim
+	" let s:JOB = SpaceVim#api#import('job')
+function! s:parser(lines) abort
+    let rst = []
+    let obj = {}
+    for line in a:lines
+        if line =~# '^summary '
+            call extend(obj, {'summary' : line[8:]})
+        elseif line =~# '^author '
+        else
+            if !empty(obj)
+                call add(rst, obj)
+            endif
+            let obj = {}
+        endif
+    endfor
+    return rst
 endfunction
 
 function! git#blame#complete(ArgLead, CmdLine, CursorPos)
