@@ -40,6 +40,7 @@ function! s:openStatusBuffer() abort
     setl nomodifiable
     setl nonumber norelativenumber
     setl buftype=nofile
+    setl bufhidden=wipe
     setf git-status
     nnoremap <buffer><silent> q :bd!<CR>
     return bufnr()
