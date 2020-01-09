@@ -19,6 +19,8 @@ function! git#run(...)
         call git#add#run(a:000[1:])
     elseif cmd ==# 'push'
         call git#push#run(a:000[1:])
+    elseif cmd ==# 'pull'
+        call git#pull#run(a:000[1:])
     elseif cmd ==# 'status'
         call git#status#run(a:000[1:])
     elseif cmd ==# 'config'
@@ -66,7 +68,7 @@ function! git#complete(ArgLead, CmdLine, CursorPos) abort
         return join(['add', 'push', 'status', 'commit', 'diff',
                     \ 'merge', 'rebase', 'branch', 'checkout',
                     \ 'fetch', 'reset', 'log', 'config', 'reflog',
-                    \ 'blame',
+                    \ 'blame', 'pull',
                     \ ],
                     \ "\n")
     elseif str =~# '^Git\s\+add\s\+.*$'
