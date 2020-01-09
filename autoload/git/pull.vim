@@ -72,7 +72,7 @@ function! s:args_with_one() abort
 
 endfunction
 
-function! git#merge#complete(ArgLead, CmdLine, CursorPos)
+function! git#pull#complete(ArgLead, CmdLine, CursorPos)
     if a:ArgLead =~# '^--'
         return s:args_with_two()
     elseif a:ArgLead =~# '^-'
