@@ -23,6 +23,8 @@ function! git#run(...)
         call git#pull#run(a:000[1:])
     elseif cmd ==# 'status'
         call git#status#run(a:000[1:])
+    elseif cmd ==# 'stash'
+        call git#stash#run(a:000[1:])
     elseif cmd ==# 'config'
         call git#config#run(a:000[1:])
     elseif cmd ==# 'diff'
@@ -68,7 +70,7 @@ function! git#complete(ArgLead, CmdLine, CursorPos) abort
         return join(['add', 'push', 'status', 'commit', 'diff',
                     \ 'merge', 'rebase', 'branch', 'checkout',
                     \ 'fetch', 'reset', 'log', 'config', 'reflog',
-                    \ 'blame', 'pull',
+                    \ 'blame', 'pull', 'stash',
                     \ ],
                     \ "\n")
     elseif str =~# '^Git\s\+add\s\+.*$'
@@ -89,6 +91,8 @@ function! git#complete(ArgLead, CmdLine, CursorPos) abort
         return git#checkout#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     elseif str =~# '^Git\s\+fetch\s\+.*$'
         return git#fetch#complete(a:ArgLead, a:CmdLine, a:CursorPos)
+    elseif str =~# '^Git\s\+stash\s\+.*$'
+        return git#stash#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     elseif str =~# '^Git\s\+config\s\+.*$'
         return git#config#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     elseif str =~# '^Git\s\+reflog\s\+.*$'

@@ -6,6 +6,7 @@ CONTENTS                                                        *git-contents*
   1. Introduction..................................................|git-intro|
   2. Commands...................................................|git-commands|
       1. git-add.....................................................|git-add|
+      2. git-stash.................................................|git-stash|
 
 ==============================================================================
 INTRODUCTION                                                       *git-intro*
@@ -26,6 +27,14 @@ This commands is to add file contents to the index. For example, add current
 file to the index.
 >
   :Git add %
+<
+
+==============================================================================
+GIT-STASH                                                          *git-stash*
+
+This commands is to manage git stash.
+>
+  :Git stash list
 <
 
 
