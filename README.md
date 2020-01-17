@@ -4,6 +4,16 @@
 
 Use git in SpaceVim
 
+
+
+<!-- vim-markdown-toc GFM -->
+
+- [usage](#usage)
+- [Screenshot](#screenshot)
+- [Feedback](#feedback)
+
+<!-- vim-markdown-toc -->
+
 ## usage
 
 - `:Git add %`: stage current file.
@@ -42,3 +52,12 @@ Use git in SpaceVim
 **`:Git log`**
 
 ![git-log](https://user-images.githubusercontent.com/13142418/70444048-39015900-1ad4-11ea-9522-1711c0c67098.png)
+
+
+## Feedback
+
+This plugin is based on SpaceVim's API, make sure your SpaceVim is the latest version.
+
+To report bug or request new features about git.vim, please send me email.
+
+wsdjeg@outlook.com
