@@ -111,7 +111,11 @@ endfunction
 
 function! s:close_log_win() abort
     call s:closeShowCommitWindow()
-    bp
+    try
+        bp
+    catch /^Vim\%((\a\+)\)\=:E85/
+        bd
+    endtry
 endfunction
 
 function! s:closeShowCommitWindow() abort
