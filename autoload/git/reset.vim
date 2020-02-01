@@ -20,6 +20,9 @@ endfunction
 function! s:on_exit(id, data, event) abort
     call git#logger#info('git-reset exit data:' . string(a:data))
     if a:data ==# 0
+        if exists(':GitGutter')
+            GitGutter
+        endif
         echo 'done!'
     else
         echo 'failed!'
