@@ -40,9 +40,17 @@ function! s:on_stderr(id, data, event) abort
     endfor
 endfunction
 
+function! s:options() abort
+    return [
+                \ '-u',
+                \ ]
+endfunction
+
 function! git#push#complete(ArgLead, CmdLine, CursorPos)
     let str = a:CmdLine[:a:CursorPos-1]
-    if str =~# '^Git\s\+push\s\+[^ ]*$'
+    if str =~# '^Git\s\+push\s\+-$'
+        return join(s:options(), "\n")
+    elseif str =~# '^Git\s\+push\s\+[^ ]*$' || str =~# '^Git\s\+push\s\+-u\s\+[^ ]*$'
         return join(s:remotes(), "\n")
     else
         let remote = matchstr(str, '\(Git\s\+push\s\+\)\@<=[^ ]*')
