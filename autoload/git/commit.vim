@@ -84,7 +84,7 @@ function! s:openCommitBuffer() abort
         autocmd WinLeave <buffer> call s:WinLeave()
         autocmd WinEnter <buffer> let b:git_commit_quitpre = 0
     augroup END
-    return bufnr()
+    return bufnr('%')
 endfunction
 
 " NOTE:

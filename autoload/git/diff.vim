@@ -47,7 +47,7 @@ function! s:openDiffBuffer() abort
     setf git-diff
     setl syntax=diff
     nnoremap <buffer><silent> q :bd!<CR>
-    return bufnr()
+    return bufnr('%')
 endfunction
 
 function! git#diff#complete(ArgLead, CmdLine, CursorPos)

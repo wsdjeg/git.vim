@@ -63,7 +63,7 @@ function! s:openBlameWindow() abort
     nnoremap <buffer><silent> <Cr> :call <SID>open_previous()<CR>
     nnoremap <buffer><silent> <BS> :call <SID>back()<CR>
     nnoremap <buffer><silent> q :call <SID>close_blame_win()<CR>
-    return bufnr()
+    return bufnr('%')
 endfunction
 
 function! s:openBlameShowWindow(fname) abort
@@ -75,7 +75,7 @@ function! s:openBlameShowWindow(fname) abort
     setl buftype=nofile
     setlocal bufhidden=wipe
     nnoremap <buffer><silent> q :bd!<CR>
-    return bufnr()
+    return bufnr('%')
 endfunction
 
 function! s:close_blame_win() abort

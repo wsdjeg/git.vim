@@ -46,7 +46,7 @@ function! s:openConfigBuffer(height) abort
     setl buftype=nofile
     setf git-config
     nnoremap <buffer><silent> q :bd!<CR>
-    return bufnr()
+    return bufnr('%')
 endfunction
 
 function! s:options() abort
