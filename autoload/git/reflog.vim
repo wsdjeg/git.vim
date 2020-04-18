@@ -33,7 +33,7 @@ function! s:on_exit(id, data, event) abort
 endfunction
 
 function! s:openRefLogBuffer() abort
-    let bp = bufnr()
+    let bp = bufnr('%')
     edit git://reflog
     normal! "_dd
     setl nobuflisted
@@ -43,7 +43,7 @@ function! s:openRefLogBuffer() abort
     setl bufhidden=wipe
     setf git-reflog
     exe 'nnoremap <buffer><silent> q :b' . bp . '<Cr>'
-    return bufnr()
+    return bufnr('%')
 endfunction
 
 function! s:subcommands() abort
