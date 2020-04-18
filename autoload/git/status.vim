@@ -43,5 +43,6 @@ function! s:openStatusBuffer() abort
     setl bufhidden=wipe
     setf git-status
     nnoremap <buffer><silent> q :bd!<CR>
-    return bufnr()
+    " https://github.com/vim/vim/commit/a8eee21e75324d199acb1663cb5009e03014a13a
+    return bufnr('%')
 endfunction
