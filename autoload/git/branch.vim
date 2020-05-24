@@ -46,7 +46,7 @@ endfunction
 
 let s:branch = ''
 function! s:update_branch_name() abort
-    let cmd = 'git branch --show-current'
+    let cmd = 'git rev-parse --abbrev-ref HEAD'
     call s:JOB.start(cmd,
                 \ {
                 \ 'on_stdout' : function('s:on_stdout_show_branch'),
