@@ -46,8 +46,14 @@ endfunction
 
 function! s:update_buffer_context() abort
     let lines = []
+    call add(lines, 'local')
+    let remote = ''
     for branch in s:branchs
-        call add(lines, branch.name)
+        if branch.remote != remote
+            call add(lines, 'r:' . branch.remote)
+            let remote = branch.remote
+        endif
+        call add(lines, '  ' . branch.name)
     endfor
     
   call s:BUFFER.buf_set_lines(s:bufnr, 0 , -1, 0, lines)
@@ -58,7 +64,7 @@ function! s:on_stdout(id, data, event) abort
         call SpaceVim#logger#info('>>' . line)
         if stridx(line, 'remotes/') == -1
             let branch = {
-            \ 'name': line,
+            \ 'name': trim(line),
             \ 'remote': '',
             \ 'islocal': 1,
             \  }
