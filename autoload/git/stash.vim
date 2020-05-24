@@ -113,7 +113,7 @@ function! s:openStashShowBuffer() abort
     setf git-diff
     setl syntax=diff
     nnoremap <buffer><silent> q :bd!<CR>
-    return bufnr()
+    return bufnr('%')
 endfunction
 
 function! s:sub_commands() abort

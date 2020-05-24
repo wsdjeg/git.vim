@@ -39,7 +39,7 @@ function! s:on_exit(id, data, event) abort
 endfunction
 
 function! s:openLogBuffer() abort
-    let bp = bufnr()
+    let bp = bufnr('%')
     edit git://log
     normal! "_dd
     setl nobuflisted
@@ -50,7 +50,7 @@ function! s:openLogBuffer() abort
     setf git-log
     nnoremap <buffer><silent> <Cr> :call <SID>show_commit()<CR>
     nnoremap <buffer><silent> q :call <SID>close_log_win()<CR>
-    return bufnr()
+    return bufnr('%')
 endfunction
 
 function! git#log#complete(ArgLead, CmdLine, CursorPos)
@@ -106,7 +106,7 @@ function! s:openShowCommitBuffer() abort
     setf git-diff
     setl syntax=diff
     nnoremap <buffer><silent> q :q<CR>
-    return bufnr()
+    return bufnr('%')
 endfunction
 
 function! s:close_log_win() abort
