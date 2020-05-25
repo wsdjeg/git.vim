@@ -1,9 +1,9 @@
 let s:JOB = SpaceVim#api#import('job')
 
 function! git#branch#run(args)
-
     if len(a:args) == 0
-        let cmd = ['git', 'branch'] 
+        call git#branch#manager#open()
+        return
     else
         let cmd = ['git', 'branch'] + a:args
     endif
