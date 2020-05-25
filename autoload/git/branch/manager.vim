@@ -29,6 +29,11 @@ function! s:WinEnter() abort
     let s:winid = win_getid(winnr('#'))
 endfunction
 function! s:checkout_branch() abort
+    let line = getline('.')
+    if line =~# '^\s\+\S\+'
+        let branch = split(line)[0]
+        exe 'Git checkout ' . branch
+    endif
 endfunction
 
 function! s:update() abort
