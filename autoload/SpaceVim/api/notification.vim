@@ -58,7 +58,7 @@ function! s:self.notification(msg, color) abort
     call setbufvar(s:buffer_id, '&number', 0)
     call setbufvar(s:buffer_id, '&relativenumber', 0)
     call setbufvar(s:buffer_id, '&buftype', 'nofile')
-    let s:timer_id = timer_start(2000, function('s:close'), {'repeat' : 1})
+    let s:timer_id = timer_start(3000, function('s:close'), {'repeat' : 1})
 endfunction
 
 
