@@ -36,6 +36,7 @@ function! s:self.notification(msg, color) abort
                     \ 'width'   : strwidth(a:msg), 
                     \ 'height'  : 1 + len(s:shown),
                     \ 'row': 2,
+                    \ 'highlight' : a:color,
                     \ 'col': &columns - strwidth(a:msg) - 3
                     \ })
     else
@@ -45,6 +46,7 @@ function! s:self.notification(msg, color) abort
                     \ 'width'   : strwidth(a:msg), 
                     \ 'height'  : 1 + len(s:shown),
                     \ 'row': 2,
+                    \ 'highlight' : a:color,
                     \ 'col': &columns - strwidth(a:msg) - 3
                     \ })
         let s:win_is_open = v:true
