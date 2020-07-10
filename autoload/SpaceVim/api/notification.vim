@@ -1,6 +1,10 @@
 let s:self = {}
 
-let s:FLOATING = SpaceVim#api#import('neovim#floating')
+if has('nvim')
+    let s:FLOATING = SpaceVim#api#import('neovim#floating')
+else
+    let s:FLOATING = SpaceVim#api#import('vim#floating')
+endif
 let s:BUFFER = SpaceVim#api#import('vim#buffer')
 
 
@@ -8,14 +12,14 @@ let s:messages = []
 
 let s:shown = []
 
-let s:buffer_id = nvim_create_buf(v:false, v:false)
+let s:buffer_id = s:BUFFER.bufadd('')
 let s:timer_id = -1
 
 let s:win_is_open = v:false
 
 function! s:close(...) abort
     if len(s:shown) == 1
-        noautocmd call nvim_win_close(s:notification_winid, v:true)
+        noautocmd call s:FLOATING.win_close(s:notification_winid, v:true)
         let s:win_is_open = v:false
     endif
     if !empty(s:shown)
