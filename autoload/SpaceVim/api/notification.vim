@@ -50,7 +50,9 @@ function! s:self.notification(msg, color) abort
         let s:win_is_open = v:true
     endif
     call s:BUFFER.buf_set_lines(s:buffer_id, 0 , -1, 0, s:shown)
-    call setbufvar(s:buffer_id, '&winhighlight', 'Normal:' . a:color)
+    if exists('&winhighlight')
+        call setbufvar(s:buffer_id, '&winhighlight', 'Normal:' . a:color)
+    endif
     call setbufvar(s:buffer_id, '&number', 0)
     call setbufvar(s:buffer_id, '&relativenumber', 0)
     call setbufvar(s:buffer_id, '&buftype', 'nofile')
