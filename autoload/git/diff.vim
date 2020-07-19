@@ -46,7 +46,7 @@ function! s:openDiffBuffer() abort
     setl buftype=nofile
     setf git-diff
     setl syntax=diff
-    nnoremap <buffer><silent> q :bd!<CR>
+    nnoremap <buffer><silent> q :call <SID>close_diff_window()<CR>
     return bufnr('%')
 endfunction
 
@@ -54,4 +54,12 @@ function! git#diff#complete(ArgLead, CmdLine, CursorPos)
 
     return "%\n" . join(getcompletion(a:ArgLead, 'file'), "\n")
 
+endfunction
+
+function! s:close_diff_window() abort
+    if winnr('$') > 1
+        close
+    else
+        bd!
+    endif
 endfunction

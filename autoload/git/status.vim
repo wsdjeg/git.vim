@@ -42,7 +42,15 @@ function! s:openStatusBuffer() abort
     setl buftype=nofile
     setl bufhidden=wipe
     setf git-status
-    nnoremap <buffer><silent> q :bd!<CR>
+    nnoremap <buffer><silent> q :call <SID>close_status_window()<CR>
     " https://github.com/vim/vim/commit/a8eee21e75324d199acb1663cb5009e03014a13a
     return bufnr('%')
+endfunction
+
+function! s:close_status_window() abort
+    if winnr('$') > 1
+        close
+    else
+        bd!
+    endif
 endfunction
