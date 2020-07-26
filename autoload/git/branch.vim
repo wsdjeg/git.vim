@@ -1,4 +1,5 @@
 let s:JOB = SpaceVim#api#import('job')
+let s:STR = SpaceVim#api#import('data#string')
 
 function! git#branch#run(args)
     if len(a:args) == 0
@@ -54,7 +55,7 @@ function! s:update_branch_name() abort
                 \ )
 endfunction
 function! s:on_stdout_show_branch(id, data, event) abort
-    let b = trim(join(a:data, ""))
+    let b = s:STR.trim(join(a:data, ""))
     if !empty(b)
         let s:branch = b
     endif
