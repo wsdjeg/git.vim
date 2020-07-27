@@ -7,7 +7,6 @@ function! git#diff#run(...)
     else
         let cmd = ['git', 'diff'] + a:1
     endif
-    let s:bufnr = s:openDiffBuffer()
     let s:lines = []
     call git#logger#info('git-diff cmd:' . string(cmd))
     call s:JOB.start(cmd,
@@ -33,7 +32,10 @@ function! s:on_stderr(id, data, event) abort
 endfunction
 function! s:on_exit(id, data, event) abort
     call git#logger#info('git-diff exit data:' . string(a:data))
+    let s:bufnr = s:openDiffBuffer()
+    call setbufvar(s:bufnr, 'modifiable', 1)
     call s:BUFFER.buf_set_lines(s:bufnr, 0 , -1, 0, s:lines)
+    call setbufvar(s:bufnr, 'modifiable', 1)
 endfunction
 
 
@@ -44,6 +46,7 @@ function! s:openDiffBuffer() abort
     setl nomodifiable
     setl nonumber norelativenumber
     setl buftype=nofile
+    setl bufhidden=wipe
     setf git-diff
     setl syntax=diff
     nnoremap <buffer><silent> q :call <SID>close_diff_window()<CR>
