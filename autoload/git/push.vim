@@ -1,9 +1,15 @@
+"=============================================================================
+" push.vim --- push command for git.vim
+" Copyright (c) 2016-2019 Wang Shidong & Contributors
+" Author: Wang Shidong < wsdjeg@outlook.com >
+" License: GPLv3
+"=============================================================================
+
 let s:JOB = SpaceVim#api#import('job')
 let s:NOTI =SpaceVim#api#import('notification')
 
 function! git#push#run(...)
 
-    let g:wsd = a:000
     let cmd = ['git', 'push']
     if len(a:1) > 0
         let cmd += a:1
