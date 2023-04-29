@@ -7,13 +7,13 @@
 " <
 
 let s:JOB = SpaceVim#api#import('job')
-let s:NOTI =SpaceVim#api#import('notification')
+let s:NOTI = SpaceVim#api#import('notify')
 let s:BUFFER = SpaceVim#api#import('vim#buffer')
 
 
 let s:stash_show_bufnr = -1
 
-function! git#stash#run(args)
+function! git#stash#run(args) abort
 
     let cmd = ['git', 'stash'] + a:args
     let subcmd = get(a:args, 0, '')
@@ -23,7 +23,7 @@ function! git#stash#run(args)
         let subcmd = ''
     endif
 
-    call git#logger#info('git-stash cmd:' . string(cmd))
+    call git#logger#debug('git-stash cmd:' . string(cmd))
     let s:lines = []
     call s:JOB.start(cmd,
                 \ {
@@ -36,19 +36,19 @@ endfunction
 
 function! s:on_stdout(id, data, event) abort
     for line in filter(a:data, '!empty(v:val)')
-        call git#logger#info('git-stash stdout:' . line)
-        call s:NOTI.notification(line, 'Normal')
+        call git#logger#debug('git-stash stdout:' . line)
+        call s:NOTI.notify(line, 'Normal')
     endfor
 endfunction
 
 function! s:on_stderr(id, data, event) abort
     for data in a:data
-        call git#logger#info('git-stash stderr:' . data)
+        call git#logger#debug('git-stash stderr:' . data)
     endfor
 endfunction
 
 function! s:on_exit(id, data, event) abort
-    call git#logger#info('git-stash exit data:' . string(a:data))
+    call git#logger#debug('git-stash exit data:' . string(a:data))
     if a:data ==# 0
         " echo 'done!'
     else
@@ -58,20 +58,20 @@ endfunction
 
 function! s:on_drop_stdout(id, data, event) abort
     for line in filter(a:data, '!empty(v:val)')
-        call git#logger#info('git-stash stdout:' . line)
-        call s:NOTI.notification(line, 'Normal')
+        call git#logger#debug('git-stash stdout:' . line)
+        call s:NOTI.notify(line, 'Normal')
     endfor
 endfunction
 
 function! s:on_drop_stderr(id, data, event) abort
     for line in filter(a:data, '!empty(v:val)')
-        call git#logger#info('git-stash stdout:' . line)
-        call s:NOTI.notification(line, 'WarningMsg')
+        call git#logger#debug('git-stash stdout:' . line)
+        call s:NOTI.notify(line, 'WarningMsg')
     endfor
 endfunction
 
 function! s:on_drop_exit(id, data, event) abort
-    call git#logger#info('git-stash exit data:' . string(a:data))
+    call git#logger#debug('git-stash exit data:' . string(a:data))
     if a:data ==# 0
         " echo 'done!'
     else
@@ -81,20 +81,20 @@ endfunction
 
 function! s:on_show_stdout(id, data, event) abort
     for data in a:data
-        call git#logger#info('git-stash stdout:' . data)
+        call git#logger#debug('git-stash stdout:' . data)
     endfor
     let s:lines += a:data
 endfunction
 
 function! s:on_show_stderr(id, data, event) abort
     for line in filter(a:data, '!empty(v:val)')
-        call git#logger#info('git-stash stdout:' . line)
-        call s:NOTI.notification(line, 'WarningMsg')
+        call git#logger#debug('git-stash stdout:' . line)
+        call s:NOTI.notify(line, 'WarningMsg')
     endfor
 endfunction
 
 function! s:on_show_exit(id, data, event) abort
-    call git#logger#info('git-stash exit data:' . string(a:data))
+    call git#logger#debug('git-stash exit data:' . string(a:data))
     if a:data ==# 0
         if !bufexists(s:stash_show_bufnr)
             let s:stash_show_bufnr = s:openStashShowBuffer()
@@ -130,7 +130,7 @@ function! s:sub_commands() abort
                 \ "\n")
 endfunction
 
-function! git#stash#complete(ArgLead, CmdLine, CursorPos)
+function! git#stash#complete(ArgLead, CmdLine, CursorPos) abort
 
     let str = a:CmdLine[:a:CursorPos-1]
     if str =~# '^Git\s\+stash\s\+[a-z]\=$'

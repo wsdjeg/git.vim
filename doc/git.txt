@@ -6,7 +6,13 @@ CONTENTS                                                        *git-contents*
   1. Introduction..................................................|git-intro|
   2. Commands...................................................|git-commands|
       1. git-add.....................................................|git-add|
-      2. git-stash.................................................|git-stash|
+      2. git-branch...............................................|git-branch|
+      3. git-cherry-pick.....................................|git-cherry-pick|
+      4. git-clean.................................................|git-clean|
+      5. git-mv.......................................................|git-mv|
+      6. git-rm.......................................................|git-rm|
+      7. git-stash.................................................|git-stash|
+  3. Functions.................................................|git-functions|
 
 ==============================================================================
 INTRODUCTION                                                       *git-intro*
@@ -30,12 +36,63 @@ file to the index.
 <
 
 ==============================================================================
+GIT-BRANCH                                                        *git-branch*
+
+This commands is to open branch manager.
+>
+  :Git branch
+<
+
+==============================================================================
+GIT-CHERRY-PICK                                              *git-cherry-pick*
+
+This command is to cherry pick commit from other branch.
+>
+  :Git cherry-pick <HashA> <HashB>
+<
+
+==============================================================================
+GIT-CLEAN                                                          *git-clean*
+
+This commands is to run `git clean`.
+>
+  :Git clean -f
+<
+
+==============================================================================
+GIT-MV                                                                *git-mv*
+
+This commands is to run `git mv` command asynchronously. It is to move file to
+the index. For example, rename current file.
+>
+  :Git mv % new_file.txt
+<
+
+==============================================================================
+GIT-RM                                                                *git-rm*
+
+This commands is to rm file contents to the index. For example, rm current
+file to the index.
+>
+  :Git rm %
+<
+
+==============================================================================
 GIT-STASH                                                          *git-stash*
 
 This commands is to manage git stash.
 >
   :Git stash list
 <
+
+==============================================================================
+FUNCTIONS                                                      *git-functions*
+
+git#branch#current()                                    *git#branch#current()*
+  return the current branch info. this function can be used in statusline.
+
+git#branch#detect()                                      *git#branch#detect()*
+  update the branch info manually.
 
 
 vim:tw=78:ts=8:ft=help:norl:

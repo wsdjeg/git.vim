@@ -1,6 +1,6 @@
 "=============================================================================
 " git.vim
-" Copyright (c) 2016-2019 Wang Shidong & Contributors
+" Copyright (c) 2016-2023 Wang Shidong & Contributors
 " Author: Wang Shidong < wsdjeg@outlook.com >
 " URL: https://spacevim.org
 " License: GPLv3
@@ -13,7 +13,7 @@
 " git.vim is a simple plugin for using git in vim and neovim.
 " This plugin requires SpaceVim API and |job| support.
 
-function! git#run(...)
+function! git#run(...) abort
     let cmd = get(a:000, 0, '')
     if cmd ==# 'add'
         call git#add#run(a:000[1:])
@@ -29,6 +29,12 @@ function! git#run(...)
         call git#config#run(a:000[1:])
     elseif cmd ==# 'diff'
         call git#diff#run(a:000[1:])
+    elseif cmd ==# 'rm'
+        call git#rm#run(a:000[1:])
+    elseif cmd ==# 'clean'
+        call git#clean#run(a:000[1:])
+    elseif cmd ==# 'mv'
+        call git#mv#run(a:000[1:])
     elseif cmd ==# 'log'
         call git#log#run(a:000[1:])
     elseif cmd ==# 'reflog'
@@ -41,6 +47,8 @@ function! git#run(...)
         call git#blame#run(a:000[1:])
     elseif cmd ==# 'rebase'
         call git#rebase#run(a:000[1:])
+    elseif cmd ==# 'remote'
+        call git#remote#run(a:000[1:])
     elseif cmd ==# 'fetch'
         call git#fetch#run(a:000[1:])
     elseif cmd ==# 'commit'
@@ -49,6 +57,8 @@ function! git#run(...)
         call git#branch#run(a:000[1:])
     elseif cmd ==# 'checkout'
         call git#checkout#run(a:000[1:])
+    elseif cmd ==# 'cherry-pick'
+        call git#cherry_pick#run(a:000[1:])
     elseif cmd ==# '--log'
         let args = get(a:000, 1, '')
         if args ==# 'clear'
@@ -70,11 +80,17 @@ function! git#complete(ArgLead, CmdLine, CursorPos) abort
         return join(['add', 'push', 'status', 'commit', 'diff',
                     \ 'merge', 'rebase', 'branch', 'checkout',
                     \ 'fetch', 'reset', 'log', 'config', 'reflog',
-                    \ 'blame', 'pull', 'stash',
+                    \ 'blame', 'pull', 'stash', 'cherry-pick', 'rm', 'mv', 'remote', 'clean'
                     \ ],
                     \ "\n")
     elseif str =~# '^Git\s\+add\s\+.*$'
         return git#add#complete(a:ArgLead, a:CmdLine, a:CursorPos)
+    elseif str =~# '^Git\s\+rm\s\+.*$'
+        return git#rm#complete(a:ArgLead, a:CmdLine, a:CursorPos)
+    elseif str =~# '^Git\s\+remote\s\+.*$'
+        return git#remote#complete(a:ArgLead, a:CmdLine, a:CursorPos)
+    elseif str =~# '^Git\s\+mv\s\+.*$'
+        return git#mv#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     elseif str =~# '^Git\s\+push\s\+.*$'
         return git#push#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     elseif str =~# '^Git\s\+diff\s\+.*$'
@@ -97,6 +113,8 @@ function! git#complete(ArgLead, CmdLine, CursorPos) abort
         return git#config#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     elseif str =~# '^Git\s\+reflog\s\+.*$'
         return git#reflog#complete(a:ArgLead, a:CmdLine, a:CursorPos)
+    elseif str =~# '^Git\s\+clean\s\+.*$'
+        return git#clean#complete(a:ArgLead, a:CmdLine, a:CursorPos)
     else
         return ''
     endif
