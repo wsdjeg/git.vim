@@ -13,6 +13,7 @@
 " >
 "   :Git branch
 " <
+
 if has('nvim-0.9.0')
   function! git#branch#current(...) abort
     let prefix = get(a:000, 0, '')
@@ -22,6 +23,10 @@ if has('nvim-0.9.0')
   " update the branch info manually.
   function! git#branch#detect() abort
     lua require('git.command.branch').detect()
+  endfunction
+
+  function! git#branch#complete(ArgLead, CmdLine, CursorPos) abort
+    return luaeval('require("git.command.branch").complete(vim.api.nvim_eval("a:ArgLead"), vim.api.nvim_eval("a:CmdLine"), vim.api.nvim_eval("a:CursorPos"))')
   endfunction
 else
 
@@ -141,8 +146,6 @@ else
       return ''
     endif
   endfunction
-  ""
-  " update the branch info manually.
   function! git#branch#detect() abort
     call s:update_branch_name(getcwd(), 1)
   endfunction

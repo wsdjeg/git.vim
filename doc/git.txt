@@ -1,16 +1,19 @@
 *git.txt*	Git support in vim
-Wang Shidong                                                             *git*
+Wang Shidong & Mattes Groeger                                            *git*
 
 ==============================================================================
 CONTENTS                                                        *git-contents*
   1. Introduction..................................................|git-intro|
   2. Commands...................................................|git-commands|
       1. git-add.....................................................|git-add|
-      2. git-cherry-pick.....................................|git-cherry-pick|
-      3. git-clean.................................................|git-clean|
-      4. git-mv.......................................................|git-mv|
-      5. git-rm.......................................................|git-rm|
-      6. git-stash.................................................|git-stash|
+      2. git-branch...............................................|git-branch|
+      3. git-cherry-pick.....................................|git-cherry-pick|
+      4. git-clean.................................................|git-clean|
+      5. git-mv.......................................................|git-mv|
+      6. git-reflog...............................................|git-reflog|
+      7. git-rm.......................................................|git-rm|
+      8. git-stash.................................................|git-stash|
+      9. git-tag.....................................................|git-tag|
   3. Functions.................................................|git-functions|
 
 ==============================================================================
@@ -32,6 +35,14 @@ This commands is to add file contents to the index. For example, add current
 file to the index.
 >
   :Git add %
+<
+
+==============================================================================
+GIT-BRANCH                                                        *git-branch*
+
+This commands is to open branch manager.
+>
+  :Git branch
 <
 
 ==============================================================================
@@ -60,6 +71,14 @@ the index. For example, rename current file.
 <
 
 ==============================================================================
+GIT-REFLOG                                                        *git-reflog*
+
+This commands is to view git reflog.
+>
+  :Git reflog
+<
+
+==============================================================================
 GIT-RM                                                                *git-rm*
 
 This commands is to rm file contents to the index. For example, rm current
@@ -77,6 +96,14 @@ This commands is to manage git stash.
 <
 
 ==============================================================================
+GIT-TAG                                                              *git-tag*
+
+This commands is to run `git tag` commands.
+>
+  :Git tag --list
+<
+
+==============================================================================
 FUNCTIONS                                                      *git-functions*
 
 git#branch#detect()                                      *git#branch#detect()*
@@ -84,9 +111,6 @@ git#branch#detect()                                      *git#branch#detect()*
 
 git#branch#current()                                    *git#branch#current()*
   return the current branch info. this function can be used in statusline.
-
-git#branch#detect()                                      *git#branch#detect()*
-  update the branch info manually.
 
 
 vim:tw=78:ts=8:ft=help:norl:
