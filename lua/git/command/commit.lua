@@ -144,7 +144,7 @@ local function on_exit(id, code, single)
       if vim.startswith(line, '22222222222222222222') then
         break
       end
-      if iscommitmsg and not line.match('processing pre-vimrc command line') then
+      if iscommitmsg then
         table.insert(commitmsg, line)
       end
     end
