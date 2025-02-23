@@ -188,7 +188,7 @@ function M.run(argv)
     'git',
     '--no-pager',
     '-c',
-    [[core.editor=nvim -u NONE --headless  --cmd "call chansend(v:stderr, ['1111111111111111111111', ''])" --cmd "call chansend(v:stderr, readfile(bufname()))" --cmd "call chansend(v:stderr, ['', '22222222222222222222'])" --cmd "cq 1"]],
+    [[core.editor=nvim -u NONE --headless -n --cmd "set shada=" --cmd "call chansend(v:stderr, ['1111111111111111111111', ''])" --cmd "call chansend(v:stderr, readfile(bufname()))" --cmd "call chansend(v:stderr, ['', '22222222222222222222'])" --cmd "cq 1"]],
     '-c',
     'color.status=always',
     '-C',
