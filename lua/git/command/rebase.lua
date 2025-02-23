@@ -117,7 +117,7 @@ function m.run(argv)
     'git',
     '--no-pager',
     '-c',
-    [[core.editor=nvim -u NONE --headless -n --cmd "call chansend(v:stderr, ['', 'git-rebase-nvim-serverlist:' . serverlist()[0], ''])"]],
+    [[core.editor=nvim -u NONE --headless -n --cmd "set shada=" --cmd "call chansend(v:stderr, ['', 'git-rebase-nvim-serverlist:' . serverlist()[0], ''])"]],
     '-c',
     'color.status=always',
     '-C',
