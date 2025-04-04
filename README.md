@@ -5,12 +5,16 @@
 [![](https://spacevim.org/img/build-with-SpaceVim.svg)](https://spacevim.org)
 [![GPLv3 License](https://img.spacevim.org/license-GPLv3-blue.svg)](LICENSE)
 
+**WARNING**
+
+The development of git.vim is stopped. check [git.nvim](https://github.com/wsdjeg/git.nvim) instead.
+
 <!-- vim-markdown-toc GFM -->
 
-- [Install](#install)
-- [Usage](#usage)
-- [Screenshot](#screenshot)
-- [Feedback](#feedback)
+* [Install](#install)
+* [Usage](#usage)
+* [Screenshot](#screenshot)
+* [Feedback](#feedback)
 
 <!-- vim-markdown-toc -->
 
